@@ -1,0 +1,318 @@
+@import "tailwindcss";
+
+/* Tailwind v4 CSS-based Theme Configuration */
+@theme {
+  /* Custom Colors */
+  --color-dark-50: #f7f7f8;
+  --color-dark-100: #e3e3e5;
+  --color-dark-200: #c7c7cc;
+  --color-dark-300: #a1a1aa;
+  --color-dark-400: #71717a;
+  --color-dark-500: #52525b;
+  --color-dark-600: #3f3f46;
+  --color-dark-700: #27272a;
+  --color-dark-800: #1a1a24;
+  --color-dark-900: #0d0d12;
+
+  --color-neon-cyan: #00f0ff;
+  --color-neon-pink: #ff2d95;
+  --color-neon-purple: #b829dd;
+  --color-neon-green: #39ff14;
+  --color-neon-yellow: #fff01f;
+  --color-neon-orange: #ff6b35;
+
+  /* Custom Animations */
+  --animate-glow-pulse: glow-pulse 2s ease-in-out infinite;
+  --animate-text-shimmer: text-shimmer 3s ease-in-out infinite;
+  --animate-flicker: flicker 3s linear infinite;
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-scan-line: scan-line 8s linear infinite;
+
+  /* Keyframes */
+  @keyframes glow-pulse {
+    0%, 100% {
+      opacity: 1;
+      filter: brightness(1);
+    }
+    50% {
+      opacity: 0.8;
+      filter: brightness(1.2);
+    }
+  }
+
+  @keyframes text-shimmer {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+      opacity: 1;
+    }
+    20%, 24%, 55% {
+      opacity: 0.4;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes scan-line {
+    0% {
+      top: 0%;
+    }
+    100% {
+      top: 100%;
+    }
+  }
+}
+
+/* Base Styles */
+@layer base {
+  body {
+    @apply bg-dark-900 text-dark-50;
+  }
+}
+
+/* Custom Utility Classes */
+@layer utilities {
+  /* Neon text effects */
+  .neon-text {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor,
+      0 0 30px currentColor, 0 0 40px currentColor;
+  }
+
+  .text-glow-cyan {
+    text-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff, 0 0 30px #00f0ff;
+  }
+
+  .text-glow-pink {
+    text-shadow: 0 0 10px #ff2d95, 0 0 20px #ff2d95, 0 0 30px #ff2d95;
+  }
+
+  .text-glow-purple {
+    text-shadow: 0 0 10px #b829dd, 0 0 20px #b829dd, 0 0 30px #b829dd;
+  }
+
+  .text-glow-green {
+    text-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14;
+  }
+
+  .text-glow-yellow {
+    text-shadow: 0 0 10px #fff01f, 0 0 20px #fff01f, 0 0 30px #fff01f;
+  }
+
+  .text-glow-orange {
+    text-shadow: 0 0 10px #ff6b35, 0 0 20px #ff6b35, 0 0 30px #ff6b35;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(
+      90deg,
+      #00f0ff,
+      #ff2d95,
+      #b829dd,
+      #00f0ff
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: text-shimmer 3s ease-in-out infinite;
+  }
+
+  /* Glow line */
+  .glow-line {
+    background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+    height: 2px;
+    animation: glow-pulse 2s ease-in-out infinite;
+  }
+}
+
+/* Custom Components */
+@layer components {
+  /* Cyber card */
+  .cyber-card {
+    @apply bg-dark-800 border border-dark-700 rounded-lg p-6;
+    @apply transition-all duration-300;
+    clip-path: polygon(
+      0 0,
+      calc(100% - 20px) 0,
+      100% 20px,
+      100% 100%,
+      20px 100%,
+      0 calc(100% - 20px)
+    );
+  }
+
+  .cyber-card:hover {
+    @apply border-neon-cyan;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+  }
+
+  /* Cyber button */
+  .cyber-button {
+    @apply relative px-6 py-3 font-bold text-sm;
+    @apply border-2 border-neon-cyan text-neon-cyan;
+    @apply transition-all duration-300;
+    clip-path: polygon(
+      0 0,
+      calc(100% - 10px) 0,
+      100% 10px,
+      100% 100%,
+      10px 100%,
+      0 calc(100% - 10px)
+    );
+  }
+
+  .cyber-button:hover {
+    @apply bg-neon-cyan text-dark-900;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+  }
+}
+
+/* Glitch effect */
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+.glitch {
+  position: relative;
+  animation: glitch 0.5s infinite;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -2px 0 #ff2d95;
+  clip: rect(24px, 550px, 90px, 0);
+  animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -2px 0 #00f0ff;
+  clip: rect(85px, 550px, 140px, 0);
+  animation: glitch-anim 2s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% {
+    clip: rect(10px, 9999px, 31px, 0);
+  }
+  5% {
+    clip: rect(70px, 9999px, 71px, 0);
+  }
+  10% {
+    clip: rect(60px, 9999px, 40px, 0);
+  }
+  15% {
+    clip: rect(90px, 9999px, 20px, 0);
+  }
+  20% {
+    clip: rect(50px, 9999px, 80px, 0);
+  }
+  25% {
+    clip: rect(30px, 9999px, 60px, 0);
+  }
+  30% {
+    clip: rect(10px, 9999px, 85px, 0);
+  }
+  35% {
+    clip: rect(40px, 9999px, 95px, 0);
+  }
+  40% {
+    clip: rect(70px, 9999px, 25px, 0);
+  }
+  45% {
+    clip: rect(20px, 9999px, 45px, 0);
+  }
+  50% {
+    clip: rect(85px, 9999px, 15px, 0);
+  }
+  55% {
+    clip: rect(35px, 9999px, 75px, 0);
+  }
+  60% {
+    clip: rect(65px, 9999px, 55px, 0);
+  }
+  65% {
+    clip: rect(5px, 9999px, 90px, 0);
+  }
+  70% {
+    clip: rect(75px, 9999px, 35px, 0);
+  }
+  75% {
+    clip: rect(15px, 9999px, 65px, 0);
+  }
+  80% {
+    clip: rect(55px, 9999px, 5px, 0);
+  }
+  85% {
+    clip: rect(25px, 9999px, 100px, 0);
+  }
+  90% {
+    clip: rect(95px, 9999px, 50px, 0);
+  }
+  95% {
+    clip: rect(45px, 9999px, 30px, 0);
+  }
+  100% {
+    clip: rect(80px, 9999px, 10px, 0);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0d12;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00f0ff;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff2d95;
+}
