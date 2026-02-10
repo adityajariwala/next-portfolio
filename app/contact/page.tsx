@@ -15,23 +15,49 @@ export default function Contact() {
     message: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear error when user starts typing
+    if (error) setError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to a backend
-    // For now, just show success message
-    setIsSubmitted(true);
+    setIsSubmitting(true);
+    setError(null);
 
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      setIsSubmitted(false);
-    }, 3000);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to send message");
+      }
+
+      // Show success message
+      setIsSubmitted(true);
+
+      // Reset form after 5 seconds
+      setTimeout(() => {
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        setIsSubmitted(false);
+      }, 5000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -67,7 +93,7 @@ export default function Contact() {
                 <div className="space-y-6">
                   {/* Email */}
                   <div className="flex items-start gap-3">
-                    <Mail className="text-neon-pink mt-1 flex-shrink-0" size={20} />
+                    <Mail className="text-neon-pink mt-1 shrink-0" size={20} />
                     <div>
                       <p className="text-dark-400 text-sm">Email</p>
                       <a
@@ -81,7 +107,7 @@ export default function Contact() {
 
                   {/* Location */}
                   <div className="flex items-start gap-3">
-                    <MapPin className="text-neon-purple mt-1 flex-shrink-0" size={20} />
+                    <MapPin className="text-neon-purple mt-1 shrink-0" size={20} />
                     <div>
                       <p className="text-dark-400 text-sm">Location</p>
                       <p className="text-dark-100">{OWNER_INFO.location}</p>
@@ -228,20 +254,23 @@ export default function Contact() {
                       />
                     </div>
 
+                    {/* Error Message */}
+                    {error && (
+                      <div className="p-4 bg-red-900/20 border border-red-500 rounded text-red-400 text-sm">
+                        {error}
+                      </div>
+                    )}
+
                     {/* Submit Button */}
                     <Button
                       type="submit"
                       variant="cyber"
                       className="w-full flex items-center justify-center gap-2"
+                      disabled={isSubmitting}
                     >
                       <Send size={20} />
-                      Send Message
+                      {isSubmitting ? "Sending..." : "Send Message"}
                     </Button>
-
-                    <p className="text-xs text-dark-400 text-center">
-                      Note: This is a demo form. To make it functional, integrate with a backend
-                      service like Formspree or Netlify Forms.
-                    </p>
                   </form>
                 )}
               </CardContent>
