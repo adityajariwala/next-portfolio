@@ -343,3 +343,88 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #ff2d95;
 }
+
+/* Blog Post Prose Styles */
+.blog-content {
+  @apply text-dark-200;
+}
+
+.blog-content h1 {
+  @apply text-4xl font-bold text-neon-cyan mt-8 mb-4;
+}
+
+.blog-content h2 {
+  @apply text-3xl font-bold text-neon-cyan mt-8 mb-4;
+}
+
+.blog-content h3 {
+  @apply text-2xl font-bold text-neon-purple mt-6 mb-3;
+}
+
+.blog-content h4 {
+  @apply text-xl font-bold text-neon-pink mt-4 mb-2;
+}
+
+.blog-content p {
+  @apply text-dark-200 leading-relaxed mb-4;
+}
+
+.blog-content a {
+  @apply text-neon-cyan underline hover:text-neon-pink transition-colors;
+}
+
+.blog-content strong {
+  @apply text-dark-50 font-bold;
+}
+
+.blog-content em {
+  @apply italic;
+}
+
+.blog-content code {
+  @apply text-neon-purple bg-dark-800 px-2 py-1 rounded font-mono text-sm;
+}
+
+.blog-content pre {
+  @apply bg-dark-800 border border-dark-700 rounded-lg p-4 overflow-x-auto mb-4;
+}
+
+.blog-content pre code {
+  @apply bg-transparent p-0;
+}
+
+.blog-content blockquote {
+  @apply border-l-4 border-neon-cyan pl-6 italic text-dark-300 my-4;
+}
+
+.blog-content ul {
+  @apply list-disc list-inside mb-4 space-y-2;
+}
+
+.blog-content ol {
+  @apply list-decimal list-inside mb-4 space-y-2;
+}
+
+.blog-content li {
+  @apply text-dark-200;
+}
+
+.blog-content img {
+  @apply rounded-lg shadow-lg my-6;
+}
+
+.blog-content table {
+  @apply w-full border-collapse mb-4;
+}
+
+.blog-content th {
+  @apply bg-dark-800 border border-dark-700 px-4 py-2 text-neon-cyan font-bold;
+}
+
+.blog-content td {
+  @apply border border-dark-700 px-4 py-2;
+}
+
+.blog-content hr {
+  @apply border-dark-700 my-8;
+}

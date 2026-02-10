@@ -31,8 +31,12 @@ export default function About() {
             <div className="flex flex-col md:flex-row items-center gap-8">
               {/* Avatar */}
               <div className="flex-shrink-0">
-                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center text-4xl font-bold text-dark-900">
-                  AJ
+                <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-neon-cyan shadow-lg shadow-neon-cyan/50">
+                  <img
+                    src="/aditya.jpg"
+                    alt={OWNER_INFO.name}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
 

@@ -120,21 +120,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         </header>
 
         {/* Content */}
-        <div
-          className="prose prose-invert prose-lg max-w-none
-            prose-headings:text-neon-cyan prose-headings:font-bold
-            prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl
-            prose-p:text-dark-200 prose-p:leading-relaxed
-            prose-a:text-neon-cyan prose-a:no-underline hover:prose-a:text-neon-pink
-            prose-strong:text-dark-50 prose-strong:font-bold
-            prose-code:text-neon-purple prose-code:bg-dark-800 prose-code:px-2 prose-code:py-1 prose-code:rounded
-            prose-pre:bg-dark-800 prose-pre:border prose-pre:border-dark-700
-            prose-blockquote:border-l-4 prose-blockquote:border-neon-cyan prose-blockquote:pl-6 prose-blockquote:italic
-            prose-ul:text-dark-200 prose-ol:text-dark-200
-            prose-li:text-dark-200
-            prose-img:rounded-lg prose-img:shadow-lg"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        <div className="blog-content" dangerouslySetInnerHTML={{ __html: post.content }} />
 
         {/* Footer */}
         <footer className="mt-16 pt-8 border-t border-dark-700">
