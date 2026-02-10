@@ -70,11 +70,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         {/* Cover image */}
         {post.coverImage && (
           <div className="aspect-video w-full overflow-hidden rounded-lg mb-8">
-            <img
-              src={post.coverImage}
-              alt={post.title}
-              className="w-full h-full object-cover"
-            />
+            <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover" />
           </div>
         )}
 

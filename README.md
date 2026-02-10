@@ -37,12 +37,14 @@ A modern, cyberpunk-themed personal portfolio website built with Next.js 14, Typ
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/adityajariwala/next-portfolio.git
 cd next-portfolio
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
@@ -51,6 +53,7 @@ npm install
    - Place your `resume.pdf` file in the `/public` folder
 
 4. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -134,10 +137,7 @@ export const EXPERIENCE = [
     location: "Location",
     period: "2020 - Present",
     description: "Brief description...",
-    highlights: [
-      "Achievement 1",
-      "Achievement 2",
-    ],
+    highlights: ["Achievement 1", "Achievement 2"],
   },
 ];
 ```
@@ -185,6 +185,7 @@ npm run lint
 ### Other Platforms
 
 This project can be deployed to any platform that supports Next.js:
+
 - Netlify
 - AWS Amplify
 - Cloudflare Pages
@@ -196,42 +197,50 @@ This project can be deployed to any platform that supports Next.js:
 The contact form is currently frontend-only. To make it functional, integrate with:
 
 ### Option 1: Formspree
+
 ```bash
 npm install @formspree/react
 ```
 
 ### Option 2: Netlify Forms
+
 Add `data-netlify="true"` to your form element.
 
 ### Option 3: Custom API
+
 Create an API route at `/app/api/contact/route.ts`.
 
 ## 🎯 Features Overview
 
 ### Home Page
+
 - Animated hero section with glitch effect
 - Typewriter animation cycling through roles
 - Tech stack preview grid
 - Call-to-action sections
 
 ### About Page
+
 - Professional profile card
 - Experience timeline
 - Skills categorization
 - Engineering philosophy
 
 ### Projects Page
+
 - GitHub API integration
 - Auto-fetches latest repositories
 - Language indicators
 - Live demo and source code links
 
 ### Resume Page
+
 - Embedded PDF viewer
 - Download functionality
 - LinkedIn profile link
 
 ### Contact Page
+
 - Professional contact form
 - Contact information display
 - Social media links
@@ -247,6 +256,7 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 👤 Author
 
 **Aditya Jariwala**
+
 - Website: [adityajariwala.com](https://adityajariwala.com)
 - GitHub: [@adityajariwala](https://github.com/adityajariwala)
 - LinkedIn: [aditya-jariwala](https://www.linkedin.com/in/aditya-jariwala)

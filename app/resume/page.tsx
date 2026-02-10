@@ -16,9 +16,7 @@ export default function Resume() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 gradient-text">
-            Resume
-          </h1>
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 gradient-text">Resume</h1>
           <p className="text-dark-300 text-lg mb-8">
             Download my resume or view my professional profile
           </p>
@@ -30,11 +28,7 @@ export default function Resume() {
                 Download Resume
               </Button>
             </a>
-            <a
-              href={OWNER_INFO.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={OWNER_INFO.linkedin} target="_blank" rel="noopener noreferrer">
               <Button variant="secondary" className="flex items-center gap-2">
                 <Linkedin size={20} />
                 View LinkedIn
@@ -51,11 +45,7 @@ export default function Resume() {
           className="bg-dark-800 rounded-lg p-4 border border-dark-700"
         >
           <div className="w-full h-[800px] rounded overflow-hidden">
-            <iframe
-              src="/resume.pdf"
-              className="w-full h-full"
-              title="Resume PDF"
-            />
+            <iframe src="/resume.pdf" className="w-full h-full" title="Resume PDF" />
           </div>
 
           {/* Fallback message */}

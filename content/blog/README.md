@@ -38,32 +38,40 @@ Your markdown content starts here...
 ## Writing Tips
 
 ### Headlines
+
 Use standard markdown headers:
+
 ```markdown
 # H1 - Main Title
+
 ## H2 - Section Header
+
 ### H3 - Subsection
 ```
 
 ### Code Blocks
+
 ```markdown
 \`\`\`python
 def hello_world():
-    print("Hello, World!")
+print("Hello, World!")
 \`\`\`
 ```
 
 ### Images
+
 ```markdown
 ![Alt text](/blog-images/my-image.png)
 ```
 
 ### Links
+
 ```markdown
 [Link text](https://example.com)
 ```
 
 ### Lists
+
 ```markdown
 - Bullet point 1
 - Bullet point 2
@@ -73,14 +81,16 @@ def hello_world():
 ```
 
 ### Blockquotes
+
 ```markdown
 > This is a quote
 ```
 
 ### Emphasis
+
 ```markdown
 **bold text**
-*italic text*
+_italic text_
 `inline code`
 ```
 
@@ -129,7 +139,9 @@ Details...
 ## Implementation
 
 \`\`\`python
+
 # Code example
+
 \`\`\`
 
 ## Results
@@ -158,6 +170,7 @@ Summary...
 ## Local Testing
 
 Run the development server to preview your post:
+
 ```bash
 npm run dev
 ```

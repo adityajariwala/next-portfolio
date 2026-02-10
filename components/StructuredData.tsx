@@ -18,11 +18,7 @@ export function PersonStructuredData() {
     },
     email: OWNER_INFO.email,
     url: `https://${OWNER_INFO.domain}`,
-    sameAs: [
-      OWNER_INFO.github,
-      OWNER_INFO.linkedin,
-      OWNER_INFO.twitter,
-    ],
+    sameAs: [OWNER_INFO.github, OWNER_INFO.linkedin, OWNER_INFO.twitter],
     alumniOf: [
       {
         "@type": "CollegeOrUniversity",

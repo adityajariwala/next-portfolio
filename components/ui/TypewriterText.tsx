@@ -8,10 +8,7 @@ interface TypewriterTextProps {
   className?: string;
 }
 
-export default function TypewriterText({
-  words,
-  className = "",
-}: TypewriterTextProps) {
+export default function TypewriterText({ words, className = "" }: TypewriterTextProps) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {

@@ -16,18 +16,21 @@ Hi there! I'm excited to launch this blog as a space to share my experiences, in
 I'll be writing about topics that I'm passionate about and work with daily:
 
 ### AI/ML Engineering
+
 - Building production ML systems
 - MLOps best practices
 - Real-world applications of machine learning in financial services
 - Model deployment and monitoring strategies
 
 ### Cloud-Native Architecture
+
 - Kubernetes platform development
 - Microservices design patterns
 - Scalability challenges and solutions
 - Container orchestration best practices
 
 ### Software Engineering
+
 - System design and architecture
 - Code quality and best practices
 - Performance optimization
@@ -70,4 +73,4 @@ Let's learn and build together!
 
 ---
 
-*Stay tuned for more posts. Subscribe to my newsletter (coming soon) to get notified of new articles.*
+_Stay tuned for more posts. Subscribe to my newsletter (coming soon) to get notified of new articles._

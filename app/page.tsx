@@ -11,12 +11,9 @@ import { OWNER_INFO, ROLES, TECH_STACK } from "@/lib/constants";
 
 const techStackColors: Record<string, string> = {
   cyan: "border-neon-cyan text-neon-cyan hover:bg-neon-cyan hover:text-dark-900",
-  yellow:
-    "border-neon-yellow text-neon-yellow hover:bg-neon-yellow hover:text-dark-900",
-  green:
-    "border-neon-green text-neon-green hover:bg-neon-green hover:text-dark-900",
-  purple:
-    "border-neon-purple text-neon-purple hover:bg-neon-purple hover:text-dark-900",
+  yellow: "border-neon-yellow text-neon-yellow hover:bg-neon-yellow hover:text-dark-900",
+  green: "border-neon-green text-neon-green hover:bg-neon-green hover:text-dark-900",
+  purple: "border-neon-purple text-neon-purple hover:bg-neon-purple hover:text-dark-900",
 };
 
 export default function Home() {
@@ -35,25 +32,17 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-neon-cyan font-mono text-sm md:text-base mb-4">
-              Hi, I&apos;m
-            </p>
+            <p className="text-neon-cyan font-mono text-sm md:text-base mb-4">Hi, I&apos;m</p>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6">
-              <GlitchText
-                text={OWNER_INFO.name}
-                className="text-glow-cyan text-neon-cyan"
-              />
+              <GlitchText text={OWNER_INFO.name} className="text-glow-cyan text-neon-cyan" />
             </h1>
             <div className="text-2xl md:text-4xl lg:text-5xl font-bold mb-8 h-16 flex items-center justify-center">
-              <TypewriterText
-                words={ROLES}
-                className="gradient-text inline-block"
-              />
+              <TypewriterText words={ROLES} className="gradient-text inline-block" />
             </div>
             <p className="text-dark-200 text-lg md:text-xl max-w-3xl mx-auto mb-12">
-              Building AI-powered, cloud-native applications that process millions of
-              transactions daily. Specializing in machine learning, Kubernetes, and
-              scalable systems for financial services.
+              Building AI-powered, cloud-native applications that process millions of transactions
+              daily. Specializing in machine learning, Kubernetes, and scalable systems for
+              financial services.
             </p>
 
             {/* CTA Buttons */}
@@ -119,8 +108,7 @@ export default function Home() {
               Tech Stack
             </h2>
             <p className="text-dark-300 text-center mb-12 max-w-2xl mx-auto">
-              Technologies and tools I work with to build modern, scalable
-              applications
+              Technologies and tools I work with to build modern, scalable applications
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -171,9 +159,7 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 gradient-text">
-              Featured Projects
-            </h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 gradient-text">Featured Projects</h2>
             <p className="text-dark-300 mb-8 max-w-2xl mx-auto">
               Check out some of my recent work and open-source contributions
             </p>
@@ -199,8 +185,7 @@ export default function Home() {
               <span className="text-neon-cyan">Amazing Together</span>
             </h2>
             <p className="text-dark-300 text-lg mb-8">
-              I&apos;m always interested in hearing about new projects and
-              opportunities.
+              I&apos;m always interested in hearing about new projects and opportunities.
             </p>
             <Link href="/contact">
               <Button variant="cyber" className="text-lg px-8 py-4">

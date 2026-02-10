@@ -59,12 +59,10 @@ export default function Projects() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 gradient-text">
-            Projects
-          </h1>
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 gradient-text">Projects</h1>
           <p className="text-dark-300 text-lg max-w-2xl mx-auto">
-            A collection of my recent work and open-source contributions.
-            Check out my GitHub for more!
+            A collection of my recent work and open-source contributions. Check out my GitHub for
+            more!
           </p>
         </motion.div>
 
@@ -84,9 +82,7 @@ export default function Projects() {
             className="text-center py-20"
           >
             <div className="max-w-md mx-auto">
-              <p className="text-neon-pink text-lg mb-6">
-                Failed to load projects: {error}
-              </p>
+              <p className="text-neon-pink text-lg mb-6">Failed to load projects: {error}</p>
               <Button variant="cyber" onClick={fetchRepos}>
                 Try Again
               </Button>
@@ -154,8 +150,7 @@ export default function Projects() {
                           <span
                             className="w-3 h-3 rounded-full"
                             style={{
-                              backgroundColor:
-                                LANGUAGE_COLORS[repo.language] || "#888",
+                              backgroundColor: LANGUAGE_COLORS[repo.language] || "#888",
                             }}
                           />
                           <span>{repo.language}</span>

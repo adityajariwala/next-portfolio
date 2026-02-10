@@ -1,10 +1,10 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
-import { remark } from 'remark';
-import html from 'remark-html';
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+import { remark } from "remark";
+import html from "remark-html";
 
-const postsDirectory = path.join(process.cwd(), 'content/blog');
+const postsDirectory = path.join(process.cwd(), "content/blog");
 
 export interface BlogPost {
   slug: string;
@@ -45,8 +45,8 @@ export function getAllPostSlugs(): string[] {
   }
   const fileNames = fs.readdirSync(postsDirectory);
   return fileNames
-    .filter((fileName) => fileName.endsWith('.md'))
-    .map((fileName) => fileName.replace(/\.md$/, ''));
+    .filter((fileName) => fileName.endsWith(".md"))
+    .map((fileName) => fileName.replace(/\.md$/, ""));
 }
 
 // Get metadata for all posts (for listing page)
@@ -55,15 +55,15 @@ export function getAllPosts(): BlogPostMetadata[] {
   const posts = slugs
     .map((slug) => {
       const fullPath = path.join(postsDirectory, `${slug}.md`);
-      const fileContents = fs.readFileSync(fullPath, 'utf8');
+      const fileContents = fs.readFileSync(fullPath, "utf8");
       const { data, content } = matter(fileContents);
 
       return {
         slug,
-        title: data.title || 'Untitled',
+        title: data.title || "Untitled",
         date: data.date || new Date().toISOString(),
-        excerpt: data.excerpt || '',
-        author: data.author || 'Aditya Jariwala',
+        excerpt: data.excerpt || "",
+        author: data.author || "Aditya Jariwala",
         tags: data.tags || [],
         readingTime: calculateReadingTime(content),
         coverImage: data.coverImage,
@@ -84,21 +84,19 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       return null;
     }
 
-    const fileContents = fs.readFileSync(fullPath, 'utf8');
+    const fileContents = fs.readFileSync(fullPath, "utf8");
     const { data, content } = matter(fileContents);
 
     // Convert markdown to HTML
-    const processedContent = await remark()
-      .use(html, { sanitize: false })
-      .process(content);
+    const processedContent = await remark().use(html, { sanitize: false }).process(content);
     const contentHtml = processedContent.toString();
 
     return {
       slug,
-      title: data.title || 'Untitled',
+      title: data.title || "Untitled",
       date: data.date || new Date().toISOString(),
-      excerpt: data.excerpt || '',
-      author: data.author || 'Aditya Jariwala',
+      excerpt: data.excerpt || "",
+      author: data.author || "Aditya Jariwala",
       tags: data.tags || [],
       readingTime: calculateReadingTime(content),
       content: contentHtml,

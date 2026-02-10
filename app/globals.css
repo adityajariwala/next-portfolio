@@ -30,7 +30,8 @@
 
   /* Keyframes */
   @keyframes glow-pulse {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 1;
       filter: brightness(1);
     }
@@ -41,7 +42,8 @@
   }
 
   @keyframes text-shimmer {
-    0%, 100% {
+    0%,
+    100% {
       background-position: 0% 50%;
     }
     50% {
@@ -50,16 +52,26 @@
   }
 
   @keyframes flicker {
-    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    0%,
+    19%,
+    21%,
+    23%,
+    25%,
+    54%,
+    56%,
+    100% {
       opacity: 1;
     }
-    20%, 24%, 55% {
+    20%,
+    24%,
+    55% {
       opacity: 0.4;
     }
   }
 
   @keyframes float {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateY(0px);
     }
     50% {
@@ -88,43 +100,58 @@
 @layer utilities {
   /* Neon text effects */
   .neon-text {
-    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor,
-      0 0 30px currentColor, 0 0 40px currentColor;
+    text-shadow:
+      0 0 10px currentColor,
+      0 0 20px currentColor,
+      0 0 30px currentColor,
+      0 0 40px currentColor;
   }
 
   .text-glow-cyan {
-    text-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff, 0 0 30px #00f0ff;
+    text-shadow:
+      0 0 10px #00f0ff,
+      0 0 20px #00f0ff,
+      0 0 30px #00f0ff;
   }
 
   .text-glow-pink {
-    text-shadow: 0 0 10px #ff2d95, 0 0 20px #ff2d95, 0 0 30px #ff2d95;
+    text-shadow:
+      0 0 10px #ff2d95,
+      0 0 20px #ff2d95,
+      0 0 30px #ff2d95;
   }
 
   .text-glow-purple {
-    text-shadow: 0 0 10px #b829dd, 0 0 20px #b829dd, 0 0 30px #b829dd;
+    text-shadow:
+      0 0 10px #b829dd,
+      0 0 20px #b829dd,
+      0 0 30px #b829dd;
   }
 
   .text-glow-green {
-    text-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14;
+    text-shadow:
+      0 0 10px #39ff14,
+      0 0 20px #39ff14,
+      0 0 30px #39ff14;
   }
 
   .text-glow-yellow {
-    text-shadow: 0 0 10px #fff01f, 0 0 20px #fff01f, 0 0 30px #fff01f;
+    text-shadow:
+      0 0 10px #fff01f,
+      0 0 20px #fff01f,
+      0 0 30px #fff01f;
   }
 
   .text-glow-orange {
-    text-shadow: 0 0 10px #ff6b35, 0 0 20px #ff6b35, 0 0 30px #ff6b35;
+    text-shadow:
+      0 0 10px #ff6b35,
+      0 0 20px #ff6b35,
+      0 0 30px #ff6b35;
   }
 
   /* Gradient text */
   .gradient-text {
-    background: linear-gradient(
-      90deg,
-      #00f0ff,
-      #ff2d95,
-      #b829dd,
-      #00f0ff
-    );
+    background: linear-gradient(90deg, #00f0ff, #ff2d95, #b829dd, #00f0ff);
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;

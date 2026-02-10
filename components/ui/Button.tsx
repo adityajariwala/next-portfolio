@@ -12,8 +12,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         "bg-neon-cyan text-dark-900 hover:bg-neon-pink hover:text-dark-50 font-bold px-6 py-3",
       secondary:
         "bg-dark-800 text-neon-cyan border-2 border-neon-cyan hover:bg-neon-cyan hover:text-dark-900 font-bold px-6 py-3",
-      ghost:
-        "text-neon-cyan hover:text-neon-pink hover:bg-dark-800 px-6 py-3",
+      ghost: "text-neon-cyan hover:text-neon-pink hover:bg-dark-800 px-6 py-3",
       cyber: "cyber-button",
     };
 

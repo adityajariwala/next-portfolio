@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Calendar, Clock, Tag, Search } from "lucide-react";
@@ -20,7 +20,6 @@ interface BlogPost {
 
 export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
   const [selectedTag, setSelectedTag] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [loading, setLoading] = useState(true);
@@ -31,13 +30,12 @@ export default function BlogPage() {
       .then((res) => res.json())
       .then((data) => {
         setPosts(data);
-        setFilteredPosts(data);
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
+  const filteredPosts = useMemo(() => {
     let filtered = posts;
 
     // Filter by tag
@@ -56,7 +54,7 @@ export default function BlogPage() {
       );
     }
 
-    setFilteredPosts(filtered);
+    return filtered;
   }, [selectedTag, searchQuery, posts]);
 
   const allTags = Array.from(new Set(posts.flatMap((post) => post.tags))).sort();
@@ -79,12 +77,10 @@ export default function BlogPage() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 gradient-text">
-            Blog
-          </h1>
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 gradient-text">Blog</h1>
           <p className="text-dark-300 text-lg max-w-2xl mx-auto">
-            Thoughts on software engineering, AI/ML, cloud architecture, and lessons
-            learned building scalable systems.
+            Thoughts on software engineering, AI/ML, cloud architecture, and lessons learned
+            building scalable systems.
           </p>
         </motion.div>
 
@@ -98,7 +94,10 @@ export default function BlogPage() {
           <div className="flex flex-col md:flex-row gap-4 mb-6">
             {/* Search */}
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-400" size={20} />
+              <Search
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-400"
+                size={20}
+              />
               <input
                 type="text"
                 placeholder="Search posts..."
@@ -199,7 +198,10 @@ export default function BlogPage() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <Link href={`/blog/${post.slug}`}>
-                  <Card glow className="h-full hover:border-neon-cyan transition-all duration-300 cursor-pointer">
+                  <Card
+                    glow
+                    className="h-full hover:border-neon-cyan transition-all duration-300 cursor-pointer"
+                  >
                     {post.coverImage && (
                       <div className="aspect-video w-full overflow-hidden rounded-t-lg">
                         <img
@@ -225,9 +227,7 @@ export default function BlogPage() {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-dark-300 line-clamp-3 mb-4">
-                        {post.excerpt}
-                      </p>
+                      <p className="text-dark-300 line-clamp-3 mb-4">{post.excerpt}</p>
                       {post.tags.length > 0 && (
                         <div className="flex flex-wrap gap-2">
                           {post.tags.slice(0, 3).map((tag) => (

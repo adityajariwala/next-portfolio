@@ -34,9 +34,7 @@ export default function Navbar() {
     <nav
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled
-          ? "bg-dark-900/80 backdrop-blur-md border-b border-dark-700"
-          : "bg-transparent"
+        isScrolled ? "bg-dark-900/80 backdrop-blur-md border-b border-dark-700" : "bg-transparent"
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -57,9 +55,7 @@ export default function Navbar() {
                 href={link.path}
                 className={cn(
                   "text-sm font-medium transition-all duration-300 relative group",
-                  pathname === link.path
-                    ? "text-neon-cyan"
-                    : "text-dark-100 hover:text-neon-cyan"
+                  pathname === link.path ? "text-neon-cyan" : "text-dark-100 hover:text-neon-cyan"
                 )}
               >
                 {link.name}

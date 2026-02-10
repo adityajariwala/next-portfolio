@@ -18,9 +18,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
           <div>
-            <h3 className="text-2xl font-bold gradient-text mb-4">
-              {OWNER_INFO.name}
-            </h3>
+            <h3 className="text-2xl font-bold gradient-text mb-4">{OWNER_INFO.name}</h3>
             <p className="text-dark-300 text-sm">
               {OWNER_INFO.title} at {OWNER_INFO.company}
             </p>
@@ -29,9 +27,7 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <h4 className="text-lg font-semibold text-neon-cyan mb-4">
-              Navigation
-            </h4>
+            <h4 className="text-lg font-semibold text-neon-cyan mb-4">Navigation</h4>
             <ul className="space-y-2">
               {navLinks.map((link) => (
                 <li key={link.path}>
@@ -48,9 +44,7 @@ export default function Footer() {
 
           {/* Social Links */}
           <div>
-            <h4 className="text-lg font-semibold text-neon-cyan mb-4">
-              Connect
-            </h4>
+            <h4 className="text-lg font-semibold text-neon-cyan mb-4">Connect</h4>
             <div className="flex space-x-4">
               <a
                 href={OWNER_INFO.github}
@@ -87,12 +81,9 @@ export default function Footer() {
         {/* Copyright */}
         <div className="text-center text-dark-400 text-sm">
           <p>
-            &copy; {new Date().getFullYear()} {OWNER_INFO.name}. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} {OWNER_INFO.name}. All rights reserved.
           </p>
-          <p className="mt-1 text-xs font-mono">
-            Built with Next.js, TypeScript & Tailwind CSS
-          </p>
+          <p className="mt-1 text-xs font-mono">Built with Next.js, TypeScript & Tailwind CSS</p>
         </div>
       </div>
     </footer>

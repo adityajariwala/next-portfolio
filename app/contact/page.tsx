@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, MapPin, Github, Linkedin, Send } from "lucide-react";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
@@ -16,9 +16,7 @@ export default function Contact() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -46,13 +44,10 @@ export default function Contact() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 gradient-text">
-            Get In Touch
-          </h1>
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 gradient-text">Get In Touch</h1>
           <p className="text-dark-300 text-lg max-w-2xl mx-auto">
-            Have a question or want to work together? I&apos;d love to hear
-            from you. Send me a message and I&apos;ll respond as soon as
-            possible.
+            Have a question or want to work together? I&apos;d love to hear from you. Send me a
+            message and I&apos;ll respond as soon as possible.
           </p>
         </motion.div>
 
@@ -66,9 +61,7 @@ export default function Contact() {
           >
             <Card glow>
               <CardHeader>
-                <h2 className="text-2xl font-bold text-neon-cyan">
-                  Contact Information
-                </h2>
+                <h2 className="text-2xl font-bold text-neon-cyan">Contact Information</h2>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
@@ -135,9 +128,7 @@ export default function Contact() {
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <span className="text-neon-green font-mono">$</span>
-                  <h2 className="text-2xl font-bold text-neon-cyan font-mono">
-                    send_message.sh
-                  </h2>
+                  <h2 className="text-2xl font-bold text-neon-cyan font-mono">send_message.sh</h2>
                 </div>
               </CardHeader>
               <CardContent>
@@ -150,12 +141,9 @@ export default function Contact() {
                     <div className="w-16 h-16 bg-neon-green rounded-full flex items-center justify-center mx-auto mb-4">
                       <Send className="text-dark-900" size={32} />
                     </div>
-                    <h3 className="text-2xl font-bold text-neon-green mb-2">
-                      Message Sent!
-                    </h3>
+                    <h3 className="text-2xl font-bold text-neon-green mb-2">Message Sent!</h3>
                     <p className="text-dark-300">
-                      Thank you for reaching out. I&apos;ll get back to you
-                      soon.
+                      Thank you for reaching out. I&apos;ll get back to you soon.
                     </p>
                   </motion.div>
                 ) : (
@@ -251,8 +239,8 @@ export default function Contact() {
                     </Button>
 
                     <p className="text-xs text-dark-400 text-center">
-                      Note: This is a demo form. To make it functional, integrate
-                      with a backend service like Formspree or Netlify Forms.
+                      Note: This is a demo form. To make it functional, integrate with a backend
+                      service like Formspree or Netlify Forms.
                     </p>
                   </form>
                 )}
