@@ -157,6 +157,7 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: text-shimmer 3s ease-in-out infinite;
+    padding-bottom: 0.1em; /* Prevent descender clipping */
   }
 
   /* Glow line */

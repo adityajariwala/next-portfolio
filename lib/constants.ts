@@ -105,6 +105,18 @@ export const EXPERIENCE = [
       "Mentored consultants on best practices, taught university students about Linux and open-source software",
     ],
   },
+  {
+    title: "Psychological Operations Specialist",
+    company: "U.S. Army Reserves",
+    location: "Peru, IN",
+    period: "2017 - 2025",
+    description: "PSYOP Specialist based in 316th PSYOP company",
+    highlights: [
+      "Obtained Secret level Clearance",
+      "Led detachment of soldiers in training and real-world scenarios",
+      "More information upon request",
+    ],
+  },
 ];
 
 export const EDUCATION = [

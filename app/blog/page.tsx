@@ -77,10 +77,10 @@ export default function BlogPage() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 gradient-text">Blog</h1>
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 gradient-text pb-2">Blog</h1>
           <p className="text-dark-300 text-lg max-w-2xl mx-auto">
-            Thoughts on software engineering, AI/ML, cloud architecture, and lessons learned
-            building scalable systems.
+            Thoughts on the state of AI and software engineering today, lessons learned, case
+            studies, & the occasional rant.
           </p>
         </motion.div>
 

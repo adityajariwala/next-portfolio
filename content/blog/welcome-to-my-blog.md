@@ -7,8 +7,6 @@ tags: ["Introduction", "Software Engineering", "AI/ML", "Cloud"]
 published: true
 ---
 
-# Welcome to My Blog
-
 Hi there! I'm excited to launch this blog as a space to share my experiences, insights, and lessons learned throughout my journey in software engineering.
 
 ## What You Can Expect

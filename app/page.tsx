@@ -36,8 +36,8 @@ export default function Home() {
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6">
               <GlitchText text={OWNER_INFO.name} className="text-glow-cyan text-neon-cyan" />
             </h1>
-            <div className="text-2xl md:text-4xl lg:text-5xl font-bold mb-8 h-16 flex items-center justify-center">
-              <TypewriterText words={ROLES} className="gradient-text inline-block" />
+            <div className="text-2xl md:text-4xl lg:text-5xl font-bold mb-8 min-h-16 flex items-center justify-center">
+              <TypewriterText words={ROLES} className="gradient-text inline-block leading-tight" />
             </div>
             <p className="text-dark-200 text-lg md:text-xl max-w-3xl mx-auto mb-12">
               Building cloud-native applications that process millions of transactions daily.
