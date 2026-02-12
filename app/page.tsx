@@ -23,7 +23,7 @@ export default function Home() {
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Animated background */}
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/10 via-neon-purple/10 to-neon-pink/10 animate-glow-pulse" />
+          <div className="absolute inset-0 bg-linear-to-br from-neon-cyan/10 via-neon-purple/10 to-neon-pink/10 animate-glow-pulse" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -40,9 +40,10 @@ export default function Home() {
               <TypewriterText words={ROLES} className="gradient-text inline-block" />
             </div>
             <p className="text-dark-200 text-lg md:text-xl max-w-3xl mx-auto mb-12">
-              Building AI-powered, cloud-native applications that process millions of transactions
-              daily. Specializing in machine learning, Kubernetes, and scalable systems for
-              financial services.
+              Building cloud-native applications that process millions of transactions daily.
+              Specializing in machine learning, Kubernetes, and scalable systems for financial
+              services. Designing novel AI/ML use-cases that add real customer value and have a high
+              ROI.
             </p>
 
             {/* CTA Buttons */}

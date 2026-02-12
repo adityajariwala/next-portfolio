@@ -6,7 +6,7 @@ export const OWNER_INFO = {
   domain: "adityajariwala.com",
   github: "https://github.com/adityajariwala",
   linkedin: "https://www.linkedin.com/in/aditya-jariwala",
-  email: "ajariwala24@gmail.com",
+  email: "contact@adityajariwala.com",
   twitter: "https://twitter.com/AdityaJ15",
   tagline: "Building AI-powered, cloud-native applications at scale",
   bio: "Senior Software Engineer specializing in AI/ML and Kubernetes. I architect scalable systems that process millions of transactions daily, combining machine learning with cloud-native technologies to solve complex problems in financial services.",
@@ -26,6 +26,8 @@ export const ROLES = [
   "Kubernetes Platform Developer",
   "Cloud Architect",
   "Full Stack Engineer",
+  "Lifelong Learner",
+  "Teacher and Mentor",
 ];
 
 export const SKILLS = {
@@ -64,20 +66,20 @@ export const EXPERIENCE = [
     location: "Chicago, IL",
     period: "Present",
     description:
-      "Leading development of AI/ML-powered cloud-native applications processing millions of daily transactions in financial services.",
+      "Leading development of cloud-native applications, ETL pipelines, and real-time APIs processing millions of daily transactions in financial services.",
     highlights: [
-      "Architected and deployed scalable microservices, real-time APIs, and ML-powered data pipelines on AWS and Kubernetes",
-      "Led cross-functional engineering teams partnering with external vendors to prescreen millions of customers daily",
-      "Built ML-based credit risk scoring systems and predictive analytics solutions for financial products",
+      "Architected and deployed scalable microservices, real-time APIs, and data pipelines on AWS (ECS, Lambda, Glue, SQS, Step Functions)",
+      "Led cross-functional engineering teams partnering with external vendors (Experian, CreditSesame, CreditKarma, NerdWallet) to prescreen millions of customers daily",
+      "Translated non-technical business & stakeholder intents to concrete engineering plans",
       "Implemented comprehensive CI/CD pipelines and automated testing reducing deployment time by 60%",
       "Mentored junior engineers and established best practices for cloud-native development",
     ],
   },
   {
-    title: "Software Engineer",
-    company: "D2iQ",
-    location: "Remote",
-    period: "2021 - 2023",
+    title: "Machine Learning Engineer II",
+    company: "D2iQ (acquired by Nutanix)",
+    location: "Remote, U.S.",
+    period: "2022 - 2023",
     description:
       "Developed ML-based insights and AI capabilities for enterprise Kubernetes platform (DKP).",
     highlights: [
@@ -89,18 +91,18 @@ export const EXPERIENCE = [
     ],
   },
   {
-    title: "Instructor",
-    company: "Red Hat Academy",
-    location: "Remote",
-    period: "2019 - 2021",
+    title: "Technical Consultant",
+    company: "Red Hat",
+    location: "Remote, U.S.",
+    period: "2020 - 2022",
     description:
-      "Taught cutting-edge technologies including Linux, containers, Kubernetes, and open-source development to university students.",
+      "Consultant for public-sector clients, focusing on automation and cloud-migration.",
     highlights: [
-      "Delivered comprehensive courses on Linux fundamentals, containers, and Kubernetes",
-      "Trained hundreds of students at universities and community colleges in cloud-native technologies",
-      "Developed curriculum and hands-on labs for container orchestration and DevOps practices",
-      "Contributed to next-generation developer education in open-source technologies",
-      "Received excellent student feedback and teaching evaluations",
+      "Led on-prem to cloud-migration efforts for government agencies and other public sector clients",
+      "Converted legacy monolith architecture to scalable Kubernetes microservices",
+      "Automated major SDLC components using Ansible to save clients hundreds of developer-hours",
+      "Contributed to open-source projects like RHEL and other Linux projects",
+      "Mentored consultants on best practices, taught university students about Linux and open-source software",
     ],
   },
 ];
@@ -109,25 +111,26 @@ export const EDUCATION = [
   {
     degree: "M.S. in Computer Science",
     school: "University of Texas at Austin",
-    location: "Austin, TX",
-    period: "2018 - 2020",
-    focus: "Machine Intelligence, Predictive Analytics",
+    location: "Austin, TX (Online)",
+    period: "2021 - 2023",
+    focus: "Deep Learning, Natural Language Processing",
     achievements: [
-      "Specialized in Machine Learning and Artificial Intelligence",
-      "Focused on predictive analytics and data-driven systems",
-      "Completed advanced coursework in distributed systems and cloud computing",
+      "Specialized in NLP, Teaching Assistant for class while working full-time",
+      "Focused on advanced modeling techniques, math, and predictive analytics",
+      "Completed advanced coursework in OS, Virtualization, and Parallel Systems",
     ],
   },
   {
     degree: "B.S. in Computer Science & Mathematics",
     school: "Purdue University",
     location: "West Lafayette, IN",
-    period: "2014 - 2018",
+    period: "2016 - 2020",
     focus: "Double Major: Computer Science and Mathematics",
     achievements: [
       "Graduated with double major in Computer Science and Mathematics",
       "Strong foundation in algorithms, data structures, and mathematical modeling",
       "Completed coursework in machine learning, software engineering, and systems programming",
+      "Mathematics focus in real and complex analysis, group/ring theory, and abstract algebra",
     ],
   },
 ];

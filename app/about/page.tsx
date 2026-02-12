@@ -30,7 +30,7 @@ export default function About() {
           <Card glow className="max-w-4xl mx-auto">
             <div className="flex flex-col md:flex-row items-center gap-8">
               {/* Avatar */}
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-neon-cyan shadow-lg shadow-neon-cyan/50">
                   <img
                     src="/aditya.jpg"
@@ -81,12 +81,12 @@ export default function About() {
                   depth and practical expertise to every project.
                 </p>
                 <p>
-                  My career spans the full spectrum of modern software engineering—from teaching
-                  Linux and Kubernetes at Red Hat Academy, to building ML-based insights for
+                  My career spans the full spectrum of modern software engineering—from mentoring
+                  others Linux and Kubernetes at Red Hat Academy, to building ML-based insights for
                   enterprise Kubernetes platforms at D2iQ, to my current role developing scalable
-                  systems and predictive analytics in financial services. I&apos;ve contributed to
-                  open-source healthcare projects like ChRIS, and built everything from credit risk
-                  scoring systems to AI chatbots.
+                  systems, high-volume ETL pipelines, and real-time APIs in financial services.
+                  I&apos;ve contributed to open-source healthcare projects like ChRIS, and built
+                  everything from credit risk scoring systems to AI chatbots.
                 </p>
                 <p>
                   I specialize in the intersection of artificial intelligence, distributed systems,

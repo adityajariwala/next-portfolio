@@ -2,8 +2,8 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
-import html from "remark-html";
 import remarkGfm from "remark-gfm";
+import html from "remark-html";
 
 const postsDirectory = path.join(process.cwd(), "content/blog");
 
@@ -46,40 +46,49 @@ export function getAllPostSlugs(): string[] {
   }
   const fileNames = fs.readdirSync(postsDirectory);
   return fileNames
-    .filter((fileName) => fileName.endsWith(".md"))
-    .map((fileName) => fileName.replace(/\.md$/, ""));
+    .filter((fileName) => fileName.endsWith(".md") || fileName.endsWith(".mdx"))
+    .map((fileName) => fileName.replace(/\.(md|mdx)$/, ""));
 }
 
 // Get metadata for all posts (for listing page)
 export function getAllPosts(): BlogPostMetadata[] {
   const slugs = getAllPostSlugs();
-  const posts = slugs
-    .map((slug) => {
-      const fullPath = path.join(postsDirectory, `${slug}.md`);
-      const fileContents = fs.readFileSync(fullPath, "utf8");
-      const { data, content } = matter(fileContents);
+  return (
+    slugs
+      .map((slug) => {
+        // Try .mdx first, then .md
+        let fullPath = path.join(postsDirectory, `${slug}.mdx`);
+        if (!fs.existsSync(fullPath)) {
+          fullPath = path.join(postsDirectory, `${slug}.md`);
+        }
 
-      return {
-        slug,
-        title: data.title || "Untitled",
-        date: data.date || new Date().toISOString(),
-        excerpt: data.excerpt || "",
-        author: data.author || "Aditya Jariwala",
-        tags: data.tags || [],
-        readingTime: calculateReadingTime(content),
-        coverImage: data.coverImage,
-      };
-    })
-    // Sort posts by date (newest first)
-    .sort((a, b) => (a.date > b.date ? -1 : 1));
+        const fileContents = fs.readFileSync(fullPath, "utf8");
+        const { data, content } = matter(fileContents);
 
-  return posts;
+        return {
+          slug,
+          title: data.title || "Untitled",
+          date: data.date || new Date().toISOString(),
+          excerpt: data.excerpt || "",
+          author: data.author || "Aditya Jariwala",
+          tags: data.tags || [],
+          readingTime: calculateReadingTime(content),
+          coverImage: data.coverImage,
+        };
+      })
+      // Sort posts by date (newest first)
+      .sort((a, b) => (a.date > b.date ? -1 : 1))
+  );
 }
 
 // Get a single post by slug
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
-    const fullPath = path.join(postsDirectory, `${slug}.md`);
+    // Try .mdx first, then .md
+    let fullPath = path.join(postsDirectory, `${slug}.mdx`);
+    if (!fs.existsSync(fullPath)) {
+      fullPath = path.join(postsDirectory, `${slug}.md`);
+    }
 
     if (!fs.existsSync(fullPath)) {
       return null;
@@ -88,9 +97,9 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     const fileContents = fs.readFileSync(fullPath, "utf8");
     const { data, content } = matter(fileContents);
 
-    // Convert markdown to HTML with GitHub Flavored Markdown support
+    // Convert markdown/MDX to HTML with GitHub Flavored Markdown support
     const processedContent = await remark()
-      .use(remarkGfm) // GitHub Flavored Markdown (tables, strikethrough, etc.)
+      .use(remarkGfm)
       .use(html, { sanitize: false })
       .process(content);
     const contentHtml = processedContent.toString();
@@ -105,7 +114,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       readingTime: calculateReadingTime(content),
       content: contentHtml,
       coverImage: data.coverImage,
-      published: data.published !== false, // Default to true if not specified
+      published: data.published !== false,
     };
   } catch (error) {
     console.error(`Error loading post ${slug}:`, error);

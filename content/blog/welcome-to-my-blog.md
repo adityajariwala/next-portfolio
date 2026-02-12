@@ -1,6 +1,6 @@
 ---
 title: "Welcome to My Blog"
-date: "2024-02-09"
+date: "2026-02-09"
 excerpt: "An introduction to my blog where I'll share insights on software engineering, AI/ML, cloud architecture, and lessons learned building scalable systems."
 author: "Aditya Jariwala"
 tags: ["Introduction", "Software Engineering", "AI/ML", "Cloud"]
@@ -19,8 +19,9 @@ I'll be writing about topics that I'm passionate about and work with daily:
 
 - Building production ML systems
 - MLOps best practices
-- Real-world applications of machine learning in financial services
+- Real-world applications of machine learning
 - Model deployment and monitoring strategies
+- Things that I find cool!
 
 ### Cloud-Native Architecture
 
@@ -72,5 +73,3 @@ I'd love to hear from you! If there are topics you'd like me to cover or questio
 Let's learn and build together!
 
 ---
-
-_Stay tuned for more posts. Subscribe to my newsletter (coming soon) to get notified of new articles._

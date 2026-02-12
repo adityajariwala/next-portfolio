@@ -44,7 +44,7 @@ export default function Resume() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="bg-dark-800 rounded-lg p-4 border border-dark-700"
         >
-          <div className="w-full h-[800px] rounded overflow-hidden">
+          <div className="w-full h-200 rounded overflow-hidden">
             <iframe src="/resume.pdf" className="w-full h-full" title="Resume PDF" />
           </div>
 

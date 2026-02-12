@@ -120,7 +120,7 @@ export default function Projects() {
                       >
                         {repo.name}
                       </h3>
-                      <Github size={20} className="text-dark-400 flex-shrink-0" />
+                      <Github size={20} className="text-dark-400 shrink-0" />
                     </div>
                   </CardHeader>
 
