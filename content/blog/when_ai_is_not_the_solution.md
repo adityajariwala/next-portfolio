@@ -61,7 +61,7 @@ The mistake is jumping directly to category (3) when (1) or (2) would solve the 
 Before introducing AI into a system, walk through the following questions in order. If you answer “no” at any step, stop and fix that first.
 
 ```
-                                When AI is NOT the solution (yet)
+    When AI is NOT the solution (yet)
 
                 START
                   │
