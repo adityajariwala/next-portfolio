@@ -85,8 +85,8 @@ function buildNodes(): ConstellationNode[] {
   //
   // The constellation center is at roughly (0.7, 0.4) — right-center of viewport.
   // Categories sit on an ellipse around it, children point inward.
-  const CENTER_X = 0.68;
-  const CENTER_Y = 0.4;
+  const CENTER_X = 0.72;
+  const CENTER_Y = 0.42;
 
   // 6 categories arranged on an ellipse around the center
   // Angles chosen so nothing lands in the top-left (text area)
@@ -98,12 +98,12 @@ function buildNodes(): ConstellationNode[] {
     2.9, // Frontend — bottom
     3.6, // Systems — lower-right
   ];
-  const ELLIPSE_RX = 0.42; // much wider — categories near edges of canvas
-  const ELLIPSE_RY = 0.42; // much taller — full vertical spread
+  const ELLIPSE_RX = 0.3; // categories spread wide but not off-screen
+  const ELLIPSE_RY = 0.35; // good vertical spread
 
   // Orbital distances in PIXELS — children branch INWARD
-  const SUB_DIST = 110; // subcategory: 95-125px from parent
-  const LEAF_DIST = 65; // leaf: 50-80px further inward from subcategory
+  const SUB_DIST = 90; // subcategory: 75-105px inward from parent
+  const LEAF_DIST = 55; // leaf: 40-70px further inward
 
   Object.entries(CONSTELLATION_DATA).forEach(([catName, catData], catIdx) => {
     const angle = catAngles[catIdx % catAngles.length];
