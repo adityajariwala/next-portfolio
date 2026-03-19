@@ -9,6 +9,8 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { OWNER_INFO } from "@/lib/constants";
 import { PersonStructuredData, WebsiteStructuredData } from "@/components/StructuredData";
+import { ContactModalProvider } from "@/lib/contact-context";
+import ContactModal from "@/components/ui/ContactModal";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -90,9 +92,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <WebsiteStructuredData />
       </head>
       <body className={`${GeistSans.variable} ${jetbrainsMono.variable} font-sans`}>
-        <Navbar />
-        <main className="min-h-screen pt-16">{children}</main>
-        <Footer />
+        <ContactModalProvider>
+          <Navbar />
+          <main className="min-h-screen pt-16">{children}</main>
+          <ContactModal />
+          <Footer />
+        </ContactModalProvider>
         <Analytics />
         <SpeedInsights />
       </body>
