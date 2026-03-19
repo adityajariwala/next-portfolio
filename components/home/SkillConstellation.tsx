@@ -83,35 +83,31 @@ function buildNodes(): ConstellationNode[] {
   // constellation area. This creates a bowl where the inner space
   // fills with small interconnected nodes and cross-links.
   //
-  // The constellation center is at roughly (0.7, 0.4) — right-center of viewport.
-  // Categories sit on an ellipse around it, children point inward.
-  const CENTER_X = 0.72;
-  const CENTER_Y = 0.42;
+  // Explicit category positions (fraction of canvas).
+  // All in the right 55% of canvas (x: 0.45-0.95), full height (y: 0.08-0.85).
+  // Each has an inward angle pointing toward center of the constellation.
+  const CENTER_X = 0.7;
+  const CENTER_Y = 0.45;
 
-  // 6 categories arranged on an ellipse around the center
-  // Angles chosen so nothing lands in the top-left (text area)
-  const catAngles = [
-    -0.8, // Languages — upper-left of ellipse (but still right of text)
-    -0.15, // AI/ML — top
-    0.5, // Cloud & Infra — upper-right
-    2.3, // Backend — lower-left
-    2.9, // Frontend — bottom
-    3.6, // Systems — lower-right
+  const catPositions = [
+    { cx: 0.5, cy: 0.1 }, // Languages — top-left area
+    { cx: 0.78, cy: 0.08 }, // AI/ML — top-right
+    { cx: 0.95, cy: 0.4 }, // Cloud & Infra — far right
+    { cx: 0.48, cy: 0.55 }, // Backend — mid-left
+    { cx: 0.72, cy: 0.82 }, // Frontend — bottom-center
+    { cx: 0.95, cy: 0.7 }, // Systems — bottom-right
   ];
-  const ELLIPSE_RX = 0.3; // categories spread wide but not off-screen
-  const ELLIPSE_RY = 0.35; // good vertical spread
 
-  // Orbital distances in PIXELS — children branch INWARD
-  const SUB_DIST = 90; // subcategory: 75-105px inward from parent
-  const LEAF_DIST = 55; // leaf: 40-70px further inward
+  // Orbital distances in PIXELS — children branch INWARD toward center
+  const SUB_DIST = 85;
+  const LEAF_DIST = 50;
 
   Object.entries(CONSTELLATION_DATA).forEach(([catName, catData], catIdx) => {
-    const angle = catAngles[catIdx % catAngles.length];
+    const pos = catPositions[catIdx % catPositions.length];
     const color = COLOR_MAP[catData.color] ?? "#00f0ff";
 
-    // Category node — on the outer ellipse
-    const catBx = CENTER_X + Math.cos(angle) * ELLIPSE_RX;
-    const catBy = CENTER_Y + Math.sin(angle) * ELLIPSE_RY;
+    const catBx = pos.cx;
+    const catBy = pos.cy;
 
     // Inward direction: from category position toward the center
     const inwardAngle = Math.atan2(CENTER_Y - catBy, CENTER_X - catBx);
