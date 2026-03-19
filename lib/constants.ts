@@ -1,15 +1,18 @@
 export const OWNER_INFO = {
   name: "Aditya Jariwala",
-  title: "Senior Software Engineer",
-  company: "Capital One",
+  title: "Senior Forward Deployed Engineer",
+  company: "Healthcare AI Space",
   location: "Chicago, IL",
   domain: "adityajariwala.com",
   github: "https://github.com/adityajariwala",
   linkedin: "https://www.linkedin.com/in/aditya-jariwala",
   email: "contact@adityajariwala.com",
   twitter: "https://twitter.com/AdityaJ15",
-  tagline: "Building AI-powered, cloud-native applications at scale",
-  bio: "Senior Software Engineer specializing in AI/ML and Kubernetes. I architect scalable systems that process millions of transactions daily, combining machine learning with cloud-native technologies to solve complex problems in financial services.",
+  tagline: "Building agentic AI systems for complex, mission-driven problems",
+  bio: [
+    "Engineer building at the intersection of agentic AI, cloud infrastructure, and complex healthcare data. I design intelligent systems that surface critical signals from noisy, high-volume data — driven by a focus on improving patient outcomes and operational efficiency.",
+    "Based in Chicago, IL with my wife Chelsea and our dog Juniper. Outside of work, I enjoy running and rock climbing.",
+  ],
 };
 
 export const NAV_ITEMS = [
@@ -121,7 +124,7 @@ export const EXPERIENCE = [
     title: "Senior Software Engineer",
     company: "Capital One",
     location: "Chicago, IL",
-    period: "Present",
+    period: "2024–2026",
     description:
       "Leading development of cloud-native applications, ETL pipelines, and real-time APIs processing millions of daily transactions in financial services.",
     highlights: [
@@ -215,7 +218,7 @@ export const FEATURED_PROJECTS: string[] = ["go-cache-ml", "next-portfolio"];
 export const CAREER_TIMELINE = [
   { company: "Red Hat", role: "Technical Consultant", period: "2020–2022", color: "#39ff14" },
   { company: "D2iQ", role: "ML Engineer II", period: "2022–2023", color: "#b829dd" },
-  { company: "Capital One", role: "Senior SWE", period: "2023–Present", color: "#00f0ff" },
+  { company: "Capital One", role: "Senior SWE", period: "2023–2026", color: "#00f0ff" },
 ];
 
 export const LANGUAGE_COLORS: Record<string, string> = {

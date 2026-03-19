@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Github, ExternalLink, Star, GitFork, Loader2 } from "lucide-react";
-import Tile from "@/components/ui/Tile";
+import { Loader2 } from "lucide-react";
 import Button from "@/components/ui/Button";
+import ProjectCard from "@/components/projects/ProjectCard";
 import { LANGUAGE_COLORS } from "@/lib/constants";
 
 interface GitHubRepo {
@@ -17,6 +17,7 @@ interface GitHubRepo {
   stargazers_count: number;
   forks_count: number;
   topics: string[];
+  pushed_at?: string;
 }
 
 export default function Projects() {
@@ -34,11 +35,7 @@ export default function Projects() {
     setError(null);
     try {
       const response = await fetch("/api/projects");
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch repositories");
-      }
-
+      if (!response.ok) throw new Error("Failed to fetch repositories");
       const data = await response.json();
       setRepos(data);
     } catch (err) {
@@ -48,10 +45,15 @@ export default function Projects() {
     }
   };
 
-  // Derive unique languages from fetched repos
+  // Derive unique languages (hide niche/old ones from filter)
+  const HIDDEN_FILTERS = new Set(["Go Template", "C#", "C++"]);
   const languages = [
     "All",
-    ...Array.from(new Set(repos.map((r) => r.language).filter((l): l is string => !!l))),
+    ...Array.from(
+      new Set(
+        repos.map((r) => r.language).filter((l): l is string => !!l && !HIDDEN_FILTERS.has(l))
+      )
+    ),
   ];
 
   const filteredRepos =
@@ -167,102 +169,7 @@ export default function Projects() {
         {!loading && !error && filteredRepos.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
             {filteredRepos.map((repo, index) => (
-              <motion.div
-                key={repo.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-              >
-                <Tile accent="cyan" className="flex flex-col gap-4 p-5">
-                  {/* Repo name + github icon */}
-                  <div className="flex items-start justify-between gap-2">
-                    <h3
-                      className="text-base font-bold text-dark-100 line-clamp-1 leading-snug"
-                      title={repo.name}
-                    >
-                      {repo.name}
-                    </h3>
-                    <Github size={16} className="text-dark-400 shrink-0 mt-0.5" />
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-dark-300 text-sm line-clamp-3 leading-relaxed">
-                    {repo.description || "No description available."}
-                  </p>
-
-                  {/* Topics */}
-                  {repo.topics && repo.topics.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5">
-                      {repo.topics.slice(0, 3).map((topic) => (
-                        <span
-                          key={topic}
-                          className="px-2 py-0.5 bg-dark-700 rounded-full text-xs text-dark-300 font-mono border border-dark-600"
-                        >
-                          {topic}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Language + stats */}
-                  <div className="flex items-center gap-4 text-xs text-dark-400 font-mono">
-                    {repo.language && (
-                      <div className="flex items-center gap-1.5">
-                        <span
-                          className="w-2.5 h-2.5 rounded-full shrink-0"
-                          style={{
-                            backgroundColor: LANGUAGE_COLORS[repo.language] || "#888",
-                          }}
-                        />
-                        <span>{repo.language}</span>
-                      </div>
-                    )}
-                    <div className="flex items-center gap-1">
-                      <Star size={12} />
-                      <span>{repo.stargazers_count}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <GitFork size={12} />
-                      <span>{repo.forks_count}</span>
-                    </div>
-                  </div>
-
-                  {/* Links */}
-                  <div className="flex gap-2 pt-1">
-                    <a
-                      href={repo.html_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1"
-                    >
-                      <Button
-                        variant="secondary"
-                        className="w-full flex items-center justify-center gap-2 text-xs"
-                      >
-                        <Github size={14} />
-                        <span>View Code</span>
-                      </Button>
-                    </a>
-                    {repo.homepage && (
-                      <a
-                        href={repo.homepage}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1"
-                      >
-                        <Button
-                          variant="ghost"
-                          className="w-full flex items-center justify-center gap-2 text-xs"
-                        >
-                          <ExternalLink size={14} />
-                          <span>Live</span>
-                        </Button>
-                      </a>
-                    )}
-                  </div>
-                </Tile>
-              </motion.div>
+              <ProjectCard key={repo.id} repo={repo} index={index} />
             ))}
           </div>
         )}

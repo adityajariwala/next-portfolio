@@ -78,7 +78,7 @@ export default function HeroSection() {
             textShadow: "0 0 10px rgba(0,240,255,0.3)",
           }}
         >
-          {OWNER_INFO.title} at {OWNER_INFO.company}
+          {OWNER_INFO.title} in {OWNER_INFO.company}
         </motion.p>
 
         {/* Tagline */}
@@ -94,8 +94,8 @@ export default function HeroSection() {
             lineHeight: 1.6,
           }}
         >
-          Building AI-powered, cloud-native systems that process millions of transactions daily.
-          Specializing in ML, Kubernetes, and scalable architecture.
+          Building agentic AI systems that surface critical signals from complex data — focused on
+          improving patient outcomes and operational intelligence in healthcare.
         </motion.p>
 
         {/* CTA buttons */}

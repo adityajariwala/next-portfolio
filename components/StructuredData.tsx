@@ -30,12 +30,12 @@ export function PersonStructuredData() {
       },
     ],
     knowsAbout: [
-      "Software Engineering",
+      "Agentic AI",
+      "Healthcare AI",
       "Machine Learning",
-      "Artificial Intelligence",
-      "Kubernetes",
       "Cloud Computing",
-      "Financial Technology",
+      "Kubernetes",
+      "Software Engineering",
       "Python",
       "TypeScript",
       "Go",
@@ -60,7 +60,7 @@ export function WebsiteStructuredData() {
       "@type": "Person",
       name: OWNER_INFO.name,
     },
-    description: OWNER_INFO.bio,
+    description: OWNER_INFO.bio[0],
     inLanguage: "en-US",
   };
 

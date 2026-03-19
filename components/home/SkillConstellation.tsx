@@ -90,17 +90,17 @@ function buildNodes(): ConstellationNode[] {
   const CENTER_Y = 0.42;
 
   const catPositions = [
-    { cx: 0.48, cy: 0.1 }, // Languages — top-left
-    { cx: 0.82, cy: 0.06 }, // AI/ML — top-right (more space from Languages)
-    { cx: 0.92, cy: 0.38 }, // Cloud & Infra — right (pulled in slightly)
-    { cx: 0.48, cy: 0.52 }, // Backend — mid-left
-    { cx: 0.72, cy: 0.72 }, // Frontend — bottom (pulled up from 0.82)
-    { cx: 0.92, cy: 0.62 }, // Systems — bottom-right (pulled up from 0.7)
+    { cx: 0.48, cy: 0.1 }, // Languages (3 subs) — top-left
+    { cx: 0.82, cy: 0.06 }, // AI/ML (4 subs) — top-right
+    { cx: 0.48, cy: 0.48 }, // Cloud & Infra (4 subs) — mid-left (was right; swap with Backend to separate dense clusters)
+    { cx: 0.88, cy: 0.35 }, // Backend (3 subs) — right (pulled in from edge)
+    { cx: 0.72, cy: 0.72 }, // Frontend (3 subs) — bottom-center
+    { cx: 0.88, cy: 0.62 }, // Systems (3 subs) — bottom-right (pulled in from edge)
   ];
 
   // Orbital distances — children branch INWARD toward center
-  const SUB_DIST = 100; // bigger reach inward
-  const LEAF_DIST = 60; // leaves extend further into center
+  const SUB_DIST = 160; // subcategories reach further inward
+  const LEAF_DIST = 145; // leaves push deep into the center
 
   Object.entries(CONSTELLATION_DATA).forEach(([catName, catData], catIdx) => {
     const pos = catPositions[catIdx % catPositions.length];
@@ -135,7 +135,7 @@ function buildNodes(): ConstellationNode[] {
     const subCount = catData.subcategories.length;
     catData.subcategories.forEach((sub, subIdx) => {
       // Fan out around the inward direction
-      const fanSpread = subCount > 1 ? (subIdx / (subCount - 1) - 0.5) * 1.8 : 0;
+      const fanSpread = subCount > 1 ? (subIdx / (subCount - 1) - 0.5) * 1.4 : 0;
       const subAngle = inwardAngle + fanSpread + (rng() - 0.5) * 0.3;
       const dist = SUB_DIST - 15 + rng() * 30;
 
@@ -163,7 +163,7 @@ function buildNodes(): ConstellationNode[] {
 
       // Leaf items — continue inward from subcategory
       sub.items.forEach((item, itemIdx) => {
-        const spread = sub.items.length > 1 ? (itemIdx / (sub.items.length - 1) - 0.5) * 1.0 : 0;
+        const spread = sub.items.length > 1 ? (itemIdx / (sub.items.length - 1) - 0.5) * 0.45 : 0;
         const leafAngle = subAngle + spread + (rng() - 0.5) * 0.3;
         const leafR = dist + LEAF_DIST - 15 + rng() * 30; // total from center
 
@@ -276,8 +276,8 @@ export default function SkillConstellation({ className }: Props) {
       let px = 0,
         py = 0;
       if (mouse && !isMobile && !prefersReduced) {
-        px = -((mouse.x - w / 2) / w) * 6;
-        py = -((mouse.y - h / 2) / h) * 6;
+        px = -((mouse.x - w / 2) / w) * 2;
+        py = -((mouse.y - h / 2) / h) * 2;
       }
 
       for (const node of nodes) {
@@ -293,8 +293,8 @@ export default function SkillConstellation({ className }: Props) {
             const dx = mouse.x - x;
             const dy = mouse.y - y;
             const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 120 && dist > 0.1) {
-              const force = ((120 - dist) / 120) * 0.12;
+            if (dist < 80 && dist > 0.1) {
+              const force = ((80 - dist) / 80) * 0.06;
               x += dx * force;
               y += dy * force;
             }
@@ -375,8 +375,8 @@ export default function SkillConstellation({ className }: Props) {
         ctx!.beginPath();
         ctx!.moveTo(p.x, p.y);
         ctx!.lineTo(n.x, n.y);
-        ctx!.strokeStyle = lit ? hexA(n.color, 0.4) : hexA(n.color, n.level === 1 ? 0.18 : 0.1);
-        ctx!.lineWidth = lit ? 1.2 : 0.6;
+        ctx!.strokeStyle = lit ? hexA(n.color, 0.5) : hexA(n.color, n.level === 1 ? 0.22 : 0.14);
+        ctx!.lineWidth = lit ? 1.4 : 0.7;
         ctx!.stroke();
       }
 
@@ -388,8 +388,8 @@ export default function SkillConstellation({ className }: Props) {
         ctx!.beginPath();
         ctx!.moveTo(a.x, a.y);
         ctx!.lineTo(b.x, b.y);
-        ctx!.strokeStyle = lit ? hexA("#fff", 0.25) : hexA("#fff", 0.08);
-        ctx!.lineWidth = lit ? 0.8 : 0.4;
+        ctx!.strokeStyle = lit ? hexA("#fff", 0.35) : hexA("#fff", 0.15);
+        ctx!.lineWidth = lit ? 1.0 : 0.6;
         ctx!.setLineDash(lit ? [3, 3] : [4, 6]);
         ctx!.stroke();
         ctx!.setLineDash([]);

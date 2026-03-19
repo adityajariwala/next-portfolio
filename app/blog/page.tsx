@@ -227,21 +227,15 @@ function BlogPageContent() {
                       </div>
                     )}
                     <div className="p-8 md:p-10">
-                      {/* Featured label */}
-                      <span
-                        className="inline-block mb-4 text-xs uppercase tracking-widest text-neon-cyan border border-neon-cyan px-2 py-0.5 rounded"
-                        style={{ fontFamily: "var(--font-display)" }}
-                      >
-                        Latest Post
+                      <span className="text-[10px] font-mono text-neon-cyan/60 mb-2 block">
+                        Latest
                       </span>
 
-                      <h2 className="text-3xl md:text-4xl font-bold text-dark-50 group-hover:text-neon-cyan transition-colors duration-300 mb-4 leading-tight">
+                      <h2 className="text-2xl md:text-3xl font-bold text-dark-50 group-hover:text-neon-cyan transition-colors duration-300 mb-4 leading-tight">
                         {featuredPost.title}
                       </h2>
 
-                      <p className="text-dark-300 text-lg mb-6 line-clamp-3 max-w-3xl">
-                        {featuredPost.excerpt}
-                      </p>
+                      <p className="text-dark-300 text-lg mb-6 max-w-3xl">{featuredPost.excerpt}</p>
 
                       <div className="flex flex-wrap items-center gap-4">
                         {/* Meta */}
