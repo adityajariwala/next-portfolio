@@ -79,17 +79,23 @@ function buildNodes(): ConstellationNode[] {
   const rng = mulberry32(42);
   const nodes: ConstellationNode[] = [];
 
-  // Staggered 2-row layout:
-  // Top row:    3 categories spread wide, centered around y=0.28
-  // Bottom row: 3 categories offset/staggered, centered around y=0.72
+  // Canvas is ~65% viewport width × 100vh — roughly 950×900 on 1440p.
+  // Use the FULL space. Positions in 0-1 normalized coords.
+  // Staggered 2-row: top row slightly left-heavy, bottom row offset right.
+  // Generous spacing — clusters should breathe and overlap through cross-links.
   const categoryRegions: { cx: number; cy: number }[] = [
-    { cx: 0.12, cy: 0.28 }, // Languages — top-left
-    { cx: 0.48, cy: 0.2 }, // AI/ML — top-center (slightly higher)
-    { cx: 0.85, cy: 0.3 }, // Cloud & Infra — top-right (slightly lower)
-    { cx: 0.25, cy: 0.7 }, // Backend — bottom-left (offset from top)
-    { cx: 0.6, cy: 0.75 }, // Frontend — bottom-center-right
-    { cx: 0.9, cy: 0.65 }, // Systems — bottom-right (higher)
+    { cx: 0.15, cy: 0.18 }, // Languages — top-left
+    { cx: 0.52, cy: 0.12 }, // AI/ML — top-center
+    { cx: 0.88, cy: 0.2 }, // Cloud & Infra — top-right
+    { cx: 0.1, cy: 0.6 }, // Backend — bottom-left
+    { cx: 0.5, cy: 0.65 }, // Frontend — bottom-center
+    { cx: 0.85, cy: 0.55 }, // Systems — bottom-right
   ];
+
+  // Aspect ratio compensation: canvas is taller than wide,
+  // so y-distances in 0-1 space map to more pixels.
+  // Scale y-component of orbits down so clusters are visually round.
+  const yScale = 0.65; // approximate w/h ratio
 
   const categories = Object.entries(CONSTELLATION_DATA);
 
@@ -97,7 +103,6 @@ function buildNodes(): ConstellationNode[] {
     const region = categoryRegions[catIdx % categoryRegions.length];
     const color = COLOR_MAP[catData.color] ?? "#00f0ff";
 
-    // Level 0: Category node
     const catNodeIdx = nodes.length;
     nodes.push({
       label: catName,
@@ -105,7 +110,7 @@ function buildNodes(): ConstellationNode[] {
       by: region.cy,
       x: 0,
       y: 0,
-      r: 15 + rng() * 3,
+      r: 14 + rng() * 3,
       color,
       level: 0,
       parentIdx: -1,
@@ -115,20 +120,19 @@ function buildNodes(): ConstellationNode[] {
       driftPeriod: 5000 + rng() * 3000,
     });
 
-    // Level 1: Subcategory nodes — SPREAD OUT more from parent
     const subCount = catData.subcategories.length;
     catData.subcategories.forEach((sub, subIdx) => {
       const subAngle = ((Math.PI * 2) / subCount) * subIdx + rng() * 0.5 - 0.25;
-      const subDist = 0.07 + rng() * 0.03; // wider orbit: was 0.04
+      const subDist = 0.09 + rng() * 0.04; // big orbit
 
       const subNodeIdx = nodes.length;
       nodes.push({
         label: sub.name,
         bx: region.cx + Math.cos(subAngle) * subDist,
-        by: region.cy + Math.sin(subAngle) * subDist,
+        by: region.cy + Math.sin(subAngle) * subDist * yScale,
         x: 0,
         y: 0,
-        r: 8 + rng() * 3,
+        r: 7 + rng() * 3,
         color,
         level: 1,
         parentIdx: catNodeIdx,
@@ -138,16 +142,15 @@ function buildNodes(): ConstellationNode[] {
         driftPeriod: 3500 + rng() * 3000,
       });
 
-      // Level 2: Leaf items — spread away from subcategory
       sub.items.forEach((item, itemIdx) => {
-        const spread = sub.items.length > 1 ? (itemIdx / (sub.items.length - 1)) * 1.2 - 0.6 : 0;
+        const spread = sub.items.length > 1 ? (itemIdx / (sub.items.length - 1)) * 1.4 - 0.7 : 0;
         const leafAngle = subAngle + spread + rng() * 0.3;
-        const leafDist = subDist + 0.04 + rng() * 0.03; // wider: was 0.025
+        const leafDist = subDist + 0.05 + rng() * 0.03;
 
         nodes.push({
           label: item.name,
           bx: region.cx + Math.cos(leafAngle) * leafDist,
-          by: region.cy + Math.sin(leafAngle) * leafDist,
+          by: region.cy + Math.sin(leafAngle) * leafDist * yScale,
           x: 0,
           y: 0,
           r: 4 + rng() * 5,
