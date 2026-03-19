@@ -78,15 +78,15 @@ function buildNodes(): ConstellationNode[] {
   const rng = mulberry32(42);
   const nodes: ConstellationNode[] = [];
 
-  // Canvas is full viewport. Categories occupy the right 60% (x: 0.4-0.92)
-  // and full height with padding (y: 0.12-0.82). Staggered 2-row layout.
+  // Canvas is full viewport. Categories in right portion, clear of text (left ~35%).
+  // Staggered 2-row layout with offset for visual interest.
   const regions = [
-    { cx: 0.42, cy: 0.2 }, // Languages
-    { cx: 0.65, cy: 0.14 }, // AI/ML
-    { cx: 0.88, cy: 0.22 }, // Cloud & Infra
+    { cx: 0.52, cy: 0.2 }, // Languages — pushed right of name
+    { cx: 0.72, cy: 0.14 }, // AI/ML
+    { cx: 0.92, cy: 0.22 }, // Cloud & Infra
     { cx: 0.48, cy: 0.62 }, // Backend
-    { cx: 0.7, cy: 0.7 }, // Frontend
-    { cx: 0.9, cy: 0.58 }, // Systems
+    { cx: 0.72, cy: 0.7 }, // Frontend
+    { cx: 0.92, cy: 0.58 }, // Systems
   ];
 
   // Orbital distances in PIXELS — consistent visual spacing
@@ -359,8 +359,8 @@ export default function SkillConstellation({ className }: Props) {
         ctx!.beginPath();
         ctx!.moveTo(p.x, p.y);
         ctx!.lineTo(n.x, n.y);
-        ctx!.strokeStyle = lit ? hexA(n.color, 0.3) : hexA(n.color, n.level === 1 ? 0.08 : 0.05);
-        ctx!.lineWidth = lit ? 1 : 0.4;
+        ctx!.strokeStyle = lit ? hexA(n.color, 0.4) : hexA(n.color, n.level === 1 ? 0.18 : 0.1);
+        ctx!.lineWidth = lit ? 1.2 : 0.6;
         ctx!.stroke();
       }
 
@@ -372,9 +372,9 @@ export default function SkillConstellation({ className }: Props) {
         ctx!.beginPath();
         ctx!.moveTo(a.x, a.y);
         ctx!.lineTo(b.x, b.y);
-        ctx!.strokeStyle = lit ? hexA("#fff", 0.12) : hexA("#fff", 0.015);
-        ctx!.lineWidth = lit ? 0.6 : 0.2;
-        ctx!.setLineDash(lit ? [2, 3] : [2, 5]);
+        ctx!.strokeStyle = lit ? hexA("#fff", 0.2) : hexA("#fff", 0.04);
+        ctx!.lineWidth = lit ? 0.8 : 0.3;
+        ctx!.setLineDash(lit ? [2, 3] : [3, 5]);
         ctx!.stroke();
         ctx!.setLineDash([]);
       }
