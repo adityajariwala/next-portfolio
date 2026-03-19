@@ -4,22 +4,16 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { NAV_ITEMS } from "@/lib/constants";
+import { useContactModal } from "@/lib/contact-context";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-const navLinks = [
-  { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
-  { name: "Projects", path: "/projects" },
-  { name: "Blog", path: "/blog" },
-  { name: "Resume", path: "/resume" },
-  { name: "Contact", path: "/contact" },
-];
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { open: openContact } = useContactModal();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,14 +36,15 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="text-2xl font-bold gradient-text hover:scale-105 transition-transform"
+            className="text-xl font-bold text-neon-cyan hover:scale-105 transition-transform font-mono"
+            style={{ fontFamily: "var(--font-display)" }}
           >
-            AJ
+            aj&gt;_
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
+            {NAV_ITEMS.map((link) => (
               <Link
                 key={link.path}
                 href={link.path}
@@ -67,6 +62,14 @@ export default function Navbar() {
                 />
               </Link>
             ))}
+
+            {/* Contact CTA */}
+            <button
+              onClick={openContact}
+              className="text-sm font-medium px-4 py-1.5 border border-neon-cyan text-neon-cyan bg-transparent rounded transition-all duration-300 hover:bg-neon-cyan/10 hover:shadow-[0_0_12px_rgba(0,240,255,0.3)]"
+            >
+              Contact
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -91,7 +94,7 @@ export default function Navbar() {
             className="md:hidden bg-dark-800 border-t border-dark-700"
           >
             <div className="px-4 py-4 space-y-3">
-              {navLinks.map((link) => (
+              {NAV_ITEMS.map((link) => (
                 <Link
                   key={link.path}
                   href={link.path}
@@ -106,6 +109,17 @@ export default function Navbar() {
                   {link.name}
                 </Link>
               ))}
+
+              {/* Mobile Contact Button */}
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  openContact();
+                }}
+                className="block w-full text-left px-4 py-2 rounded border border-neon-cyan text-neon-cyan bg-transparent transition-all duration-300 hover:bg-neon-cyan/10"
+              >
+                Contact
+              </button>
             </div>
           </motion.div>
         )}
