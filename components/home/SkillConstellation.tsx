@@ -78,31 +78,49 @@ function buildNodes(): ConstellationNode[] {
   const rng = mulberry32(42);
   const nodes: ConstellationNode[] = [];
 
-  // Canvas is full viewport. Left ~40% is text. Categories in center-right.
-  // Top row: y ~0.18-0.25. Bottom row: y ~0.52-0.6 (pulled up to avoid cutoff).
-  const regions = [
-    { cx: 0.55, cy: 0.18 }, // Languages — clear of name
-    { cx: 0.75, cy: 0.14 }, // AI/ML
-    { cx: 0.92, cy: 0.22 }, // Cloud & Infra
-    { cx: 0.52, cy: 0.55 }, // Backend
-    { cx: 0.73, cy: 0.6 }, // Frontend
-    { cx: 0.92, cy: 0.5 }, // Systems
-  ];
+  // INVERTED layout: category nodes on the OUTER perimeter,
+  // subcategories and leaves branch INWARD toward the center of the
+  // constellation area. This creates a bowl where the inner space
+  // fills with small interconnected nodes and cross-links.
+  //
+  // The constellation center is at roughly (0.7, 0.4) — right-center of viewport.
+  // Categories sit on an ellipse around it, children point inward.
+  const CENTER_X = 0.68;
+  const CENTER_Y = 0.4;
 
-  // Orbital distances in PIXELS
-  const SUB_DIST = 65; // subcategory: 50-80px from parent (tighter for cohesion)
-  const LEAF_DIST = 40; // leaf: 25-55px further from subcategory
+  // 6 categories arranged on an ellipse around the center
+  // Angles chosen so nothing lands in the top-left (text area)
+  const catAngles = [
+    -0.8, // Languages — upper-left of ellipse (but still right of text)
+    -0.15, // AI/ML — top
+    0.5, // Cloud & Infra — upper-right
+    2.3, // Backend — lower-left
+    2.9, // Frontend — bottom
+    3.6, // Systems — lower-right
+  ];
+  const ELLIPSE_RX = 0.28; // horizontal radius as fraction of canvas width
+  const ELLIPSE_RY = 0.32; // vertical radius as fraction of canvas height
+
+  // Orbital distances in PIXELS — children branch INWARD
+  const SUB_DIST = 70; // subcategory distance from parent (toward center)
+  const LEAF_DIST = 40; // leaf distance further inward from subcategory
 
   Object.entries(CONSTELLATION_DATA).forEach(([catName, catData], catIdx) => {
-    const region = regions[catIdx % regions.length];
+    const angle = catAngles[catIdx % catAngles.length];
     const color = COLOR_MAP[catData.color] ?? "#00f0ff";
 
-    // Category node — ox/oy = 0 (it's the center)
+    // Category node — on the outer ellipse
+    const catBx = CENTER_X + Math.cos(angle) * ELLIPSE_RX;
+    const catBy = CENTER_Y + Math.sin(angle) * ELLIPSE_RY;
+
+    // Inward direction: from category position toward the center
+    const inwardAngle = Math.atan2(CENTER_Y - catBy, CENTER_X - catBx);
+
     const catNodeIdx = nodes.length;
     nodes.push({
       label: catName,
-      bx: region.cx,
-      by: region.cy,
+      bx: catBx,
+      by: catBy,
       ox: 0,
       oy: 0,
       x: 0,
@@ -117,11 +135,13 @@ function buildNodes(): ConstellationNode[] {
       driftPeriod: 5000 + rng() * 3000,
     });
 
-    // Subcategories — orbit at SUB_DIST pixels
+    // Subcategories — branch INWARD (toward center) with some spread
     const subCount = catData.subcategories.length;
     catData.subcategories.forEach((sub, subIdx) => {
-      const subAngle = ((Math.PI * 2) / subCount) * subIdx + rng() * 0.5 - 0.25;
-      const dist = SUB_DIST - 20 + rng() * 40; // 80-120px
+      // Fan out around the inward direction
+      const fanSpread = subCount > 1 ? (subIdx / (subCount - 1) - 0.5) * 1.2 : 0;
+      const subAngle = inwardAngle + fanSpread + (rng() - 0.5) * 0.3;
+      const dist = SUB_DIST - 15 + rng() * 30;
 
       const subOx = Math.cos(subAngle) * dist;
       const subOy = Math.sin(subAngle) * dist;
@@ -129,8 +149,8 @@ function buildNodes(): ConstellationNode[] {
       const subNodeIdx = nodes.length;
       nodes.push({
         label: sub.name,
-        bx: region.cx,
-        by: region.cy,
+        bx: catBx,
+        by: catBy,
         ox: subOx,
         oy: subOy,
         x: 0,
@@ -145,16 +165,16 @@ function buildNodes(): ConstellationNode[] {
         driftPeriod: 3500 + rng() * 3000,
       });
 
-      // Leaf items — orbit at LEAF_DIST pixels further out
+      // Leaf items — continue inward from subcategory
       sub.items.forEach((item, itemIdx) => {
-        const spread = sub.items.length > 1 ? (itemIdx / (sub.items.length - 1)) * 1.2 - 0.6 : 0;
-        const leafAngle = subAngle + spread + rng() * 0.25;
+        const spread = sub.items.length > 1 ? (itemIdx / (sub.items.length - 1) - 0.5) * 1.0 : 0;
+        const leafAngle = subAngle + spread + (rng() - 0.5) * 0.3;
         const leafR = dist + LEAF_DIST - 15 + rng() * 30; // total from center
 
         nodes.push({
           label: item.name,
-          bx: region.cx,
-          by: region.cy,
+          bx: catBx,
+          by: catBy,
           ox: Math.cos(leafAngle) * leafR,
           oy: Math.sin(leafAngle) * leafR,
           x: 0,
@@ -372,9 +392,9 @@ export default function SkillConstellation({ className }: Props) {
         ctx!.beginPath();
         ctx!.moveTo(a.x, a.y);
         ctx!.lineTo(b.x, b.y);
-        ctx!.strokeStyle = lit ? hexA("#fff", 0.2) : hexA("#fff", 0.04);
-        ctx!.lineWidth = lit ? 0.8 : 0.3;
-        ctx!.setLineDash(lit ? [2, 3] : [3, 5]);
+        ctx!.strokeStyle = lit ? hexA("#fff", 0.25) : hexA("#fff", 0.08);
+        ctx!.lineWidth = lit ? 0.8 : 0.4;
+        ctx!.setLineDash(lit ? [3, 3] : [4, 6]);
         ctx!.stroke();
         ctx!.setLineDash([]);
       }
