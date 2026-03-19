@@ -16,8 +16,13 @@ type IconName = keyof typeof ICON_MAP;
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen grid grid-cols-1 lg:grid-cols-2">
-      <div className="flex flex-col justify-center px-8 sm:px-12 lg:px-16 py-24 lg:py-0 text-center lg:text-left">
+    <section className="relative min-h-screen">
+      {/* Constellation — positioned absolute, covers right 65% of viewport, behind text */}
+      <div className="hidden lg:block absolute inset-y-0 right-0 w-[65%]">
+        <SkillConstellation className="w-full h-full" />
+      </div>
+
+      <div className="relative z-10 flex flex-col justify-center px-8 sm:px-12 lg:px-16 py-24 lg:py-0 min-h-screen text-center lg:text-left lg:max-w-[45%]">
         {/* System tag */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -143,10 +148,6 @@ export default function HeroSection() {
             );
           })}
         </motion.div>
-      </div>
-
-      <div className="hidden lg:block relative">
-        <SkillConstellation className="w-full h-full" />
       </div>
 
       <motion.div
