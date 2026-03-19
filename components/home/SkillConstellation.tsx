@@ -9,8 +9,12 @@ import { CONSTELLATION_DATA } from "@/lib/constants";
 
 interface ConstellationNode {
   label: string;
+  // Base position as fraction of canvas (0-1)
   bx: number;
   by: number;
+  // Pixel offsets from base (applied after converting bx/by to pixels)
+  ox: number;
+  oy: number;
   x: number;
   y: number;
   r: number;
@@ -21,11 +25,6 @@ interface ConstellationNode {
   driftAx: number;
   driftAy: number;
   driftPeriod: number;
-}
-
-interface CrossLink {
-  fromLabel: string;
-  toLabel: string;
 }
 
 interface Props {
@@ -41,19 +40,19 @@ const COLOR_MAP: Record<string, string> = {
   orange: "#ff6b35",
 };
 
-const CROSS_LINKS: CrossLink[] = [
-  { fromLabel: "Python", toLabel: "Pandas" },
-  { fromLabel: "Python", toLabel: "scikit-learn" },
-  { fromLabel: "TypeScript", toLabel: "React" },
-  { fromLabel: "TypeScript", toLabel: "Next.js" },
-  { fromLabel: "Rust", toLabel: "Tokio" },
-  { fromLabel: "Go", toLabel: "Go Modules" },
-  { fromLabel: "Docker", toLabel: "Kubernetes" },
-  { fromLabel: "React", toLabel: "Next.js" },
-  { fromLabel: "FastAPI", toLabel: "Pydantic" },
-  { fromLabel: "AWS", toLabel: "Terraform" },
-  { fromLabel: "FAISS", toLabel: "Vector Search" },
-  { fromLabel: "Ollama", toLabel: "RAG" },
+const CROSS_LINKS = [
+  ["Python", "Pandas"],
+  ["Python", "scikit-learn"],
+  ["TypeScript", "React"],
+  ["TypeScript", "Next.js"],
+  ["Rust", "Tokio"],
+  ["Go", "Go Modules"],
+  ["Docker", "Kubernetes"],
+  ["React", "Next.js"],
+  ["FastAPI", "Pydantic"],
+  ["AWS", "Terraform"],
+  ["FAISS", "Vector Search"],
+  ["Ollama", "RAG"],
 ];
 
 // ---------------------------------------------------------------------------
@@ -72,42 +71,41 @@ function mulberry32(seed: number) {
 }
 
 // ---------------------------------------------------------------------------
-// Build nodes — spread out, staggered 2-row layout
+// Build nodes — pixel-offset based for consistent spacing
 // ---------------------------------------------------------------------------
 
 function buildNodes(): ConstellationNode[] {
   const rng = mulberry32(42);
   const nodes: ConstellationNode[] = [];
 
-  // Canvas is ~65% viewport width × 100vh — roughly 950×900 on 1440p.
-  // Use the FULL space. Positions in 0-1 normalized coords.
-  // Staggered 2-row: top row slightly left-heavy, bottom row offset right.
-  // Generous spacing — clusters should breathe and overlap through cross-links.
-  const categoryRegions: { cx: number; cy: number }[] = [
-    { cx: 0.15, cy: 0.18 }, // Languages — top-left
-    { cx: 0.52, cy: 0.12 }, // AI/ML — top-center
-    { cx: 0.88, cy: 0.2 }, // Cloud & Infra — top-right
-    { cx: 0.1, cy: 0.6 }, // Backend — bottom-left
-    { cx: 0.5, cy: 0.65 }, // Frontend — bottom-center
-    { cx: 0.85, cy: 0.55 }, // Systems — bottom-right
+  // Category centers as fractions — spread across the full canvas
+  // Staggered 2 rows: top row at ~30%, bottom row at ~70%
+  const regions = [
+    { cx: 0.15, cy: 0.3 }, // Languages
+    { cx: 0.5, cy: 0.22 }, // AI/ML
+    { cx: 0.85, cy: 0.32 }, // Cloud & Infra
+    { cx: 0.2, cy: 0.72 }, // Backend
+    { cx: 0.55, cy: 0.78 }, // Frontend
+    { cx: 0.85, cy: 0.68 }, // Systems
   ];
 
-  // Aspect ratio compensation: canvas is taller than wide,
-  // so y-distances in 0-1 space map to more pixels.
-  // Scale y-component of orbits down so clusters are visually round.
-  const yScale = 0.65; // approximate w/h ratio
+  // Orbital distances in PIXELS (not fractions)
+  // This ensures consistent visual spacing regardless of canvas size
+  const SUB_DIST = 80 + 20; // subcategory: 80-100px from parent
+  const LEAF_DIST = 45 + 15; // leaf: 45-60px further from subcategory
 
-  const categories = Object.entries(CONSTELLATION_DATA);
-
-  categories.forEach(([catName, catData], catIdx) => {
-    const region = categoryRegions[catIdx % categoryRegions.length];
+  Object.entries(CONSTELLATION_DATA).forEach(([catName, catData], catIdx) => {
+    const region = regions[catIdx % regions.length];
     const color = COLOR_MAP[catData.color] ?? "#00f0ff";
 
+    // Category node — ox/oy = 0 (it's the center)
     const catNodeIdx = nodes.length;
     nodes.push({
       label: catName,
       bx: region.cx,
       by: region.cy,
+      ox: 0,
+      oy: 0,
       x: 0,
       y: 0,
       r: 14 + rng() * 3,
@@ -120,16 +118,22 @@ function buildNodes(): ConstellationNode[] {
       driftPeriod: 5000 + rng() * 3000,
     });
 
+    // Subcategories — orbit at SUB_DIST pixels
     const subCount = catData.subcategories.length;
     catData.subcategories.forEach((sub, subIdx) => {
       const subAngle = ((Math.PI * 2) / subCount) * subIdx + rng() * 0.5 - 0.25;
-      const subDist = 0.09 + rng() * 0.04; // big orbit
+      const dist = SUB_DIST - 20 + rng() * 40; // 80-120px
+
+      const subOx = Math.cos(subAngle) * dist;
+      const subOy = Math.sin(subAngle) * dist;
 
       const subNodeIdx = nodes.length;
       nodes.push({
         label: sub.name,
-        bx: region.cx + Math.cos(subAngle) * subDist,
-        by: region.cy + Math.sin(subAngle) * subDist * yScale,
+        bx: region.cx,
+        by: region.cy,
+        ox: subOx,
+        oy: subOy,
         x: 0,
         y: 0,
         r: 7 + rng() * 3,
@@ -142,15 +146,18 @@ function buildNodes(): ConstellationNode[] {
         driftPeriod: 3500 + rng() * 3000,
       });
 
+      // Leaf items — orbit at LEAF_DIST pixels further out
       sub.items.forEach((item, itemIdx) => {
-        const spread = sub.items.length > 1 ? (itemIdx / (sub.items.length - 1)) * 1.4 - 0.7 : 0;
-        const leafAngle = subAngle + spread + rng() * 0.3;
-        const leafDist = subDist + 0.05 + rng() * 0.03;
+        const spread = sub.items.length > 1 ? (itemIdx / (sub.items.length - 1)) * 1.2 - 0.6 : 0;
+        const leafAngle = subAngle + spread + rng() * 0.25;
+        const leafR = dist + LEAF_DIST - 15 + rng() * 30; // total from center
 
         nodes.push({
           label: item.name,
-          bx: region.cx + Math.cos(leafAngle) * leafDist,
-          by: region.cy + Math.sin(leafAngle) * leafDist * yScale,
+          bx: region.cx,
+          by: region.cy,
+          ox: Math.cos(leafAngle) * leafR,
+          oy: Math.sin(leafAngle) * leafR,
           x: 0,
           y: 0,
           r: 4 + rng() * 5,
@@ -210,16 +217,14 @@ export default function SkillConstellation({ className }: Props) {
 
     const nodes = nodesRef.current;
 
+    // Build cross-link index
     const labelToIdx = new Map<string, number>();
     nodes.forEach((n, i) => labelToIdx.set(n.label, i));
-
     const resolvedCrossLinks: [number, number][] = [];
-    for (const link of CROSS_LINKS) {
-      const from = labelToIdx.get(link.fromLabel);
-      const to = labelToIdx.get(link.toLabel);
-      if (from !== undefined && to !== undefined) {
-        resolvedCrossLinks.push([from, to]);
-      }
+    for (const [from, to] of CROSS_LINKS) {
+      const fi = labelToIdx.get(from);
+      const ti = labelToIdx.get(to);
+      if (fi !== undefined && ti !== undefined) resolvedCrossLinks.push([fi, ti]);
     }
 
     const onMouseMove = (e: MouseEvent) => {
@@ -241,35 +246,33 @@ export default function SkillConstellation({ className }: Props) {
     };
     window.addEventListener("resize", debouncedResize);
 
-    function cssWidth() {
+    function cssW() {
       return canvas!.width / (window.devicePixelRatio || 1);
     }
-    function cssHeight() {
+    function cssH() {
       return canvas!.height / (window.devicePixelRatio || 1);
     }
 
     function resolvePositions(t: number) {
-      const w = cssWidth();
-      const h = cssHeight();
+      const w = cssW();
+      const h = cssH();
       const mouse = mouseRef.current;
 
-      let px = 0;
-      let py = 0;
+      let px = 0,
+        py = 0;
       if (mouse && !isMobile && !prefersReduced) {
         px = -((mouse.x - w / 2) / w) * 6;
         py = -((mouse.y - h / 2) / h) * 6;
       }
 
       for (const node of nodes) {
-        let x = node.bx * w;
-        let y = node.by * h;
+        // Base position from fraction + pixel offset
+        let x = node.bx * w + node.ox;
+        let y = node.by * h + node.oy;
 
         if (!prefersReduced && !isMobile) {
-          const driftX = Math.sin((t / node.driftPeriod) * Math.PI * 2 + node.phase) * node.driftAx;
-          const driftY =
-            Math.cos((t / node.driftPeriod) * Math.PI * 2 + node.phase * 1.3) * node.driftAy;
-          x += driftX;
-          y += driftY;
+          x += Math.sin((t / node.driftPeriod) * Math.PI * 2 + node.phase) * node.driftAx;
+          y += Math.cos((t / node.driftPeriod) * Math.PI * 2 + node.phase * 1.3) * node.driftAy;
 
           if (mouse) {
             const dx = mouse.x - x;
@@ -291,45 +294,53 @@ export default function SkillConstellation({ className }: Props) {
       }
     }
 
-    function getAncestors(nodeIdx: number): number[] {
-      const result: number[] = [];
+    function getFamily(nodeIdx: number): Set<number> {
+      const set = new Set<number>();
+      // Walk up
       let idx = nodeIdx;
       while (idx >= 0) {
-        result.push(idx);
+        set.add(idx);
         idx = nodes[idx].parentIdx;
       }
-      return result;
-    }
-
-    function getDescendants(nodeIdx: number): number[] {
-      const result: number[] = [];
+      // Walk down
       for (let i = 0; i < nodes.length; i++) {
-        if (i === nodeIdx) continue;
-        let idx = nodes[i].parentIdx;
-        while (idx >= 0) {
-          if (idx === nodeIdx) {
-            result.push(i);
+        let p = nodes[i].parentIdx;
+        while (p >= 0) {
+          if (p === nodeIdx) {
+            set.add(i);
             break;
           }
-          idx = nodes[idx].parentIdx;
+          p = nodes[p].parentIdx;
         }
       }
-      return result;
+      // Siblings
+      const parent = nodes[nodeIdx].parentIdx;
+      if (parent >= 0) {
+        for (let i = 0; i < nodes.length; i++) {
+          if (nodes[i].parentIdx === parent) set.add(i);
+        }
+      }
+      // Cross-links
+      for (const [from, to] of resolvedCrossLinks) {
+        if (set.has(from)) set.add(to);
+        if (set.has(to)) set.add(from);
+      }
+      return set;
     }
 
     function draw() {
-      const w = cssWidth();
-      const h = cssHeight();
+      const w = cssW();
+      const h = cssH();
       ctx!.clearRect(0, 0, w, h);
-
       const mouse = mouseRef.current;
 
+      // Hover detection
       let hoveredIdx = -1;
       if (mouse && !isMobile) {
         for (let i = 0; i < nodes.length; i++) {
           const n = nodes[i];
-          const dx = mouse.x - n.x;
-          const dy = mouse.y - n.y;
+          const dx = mouse.x - n.x,
+            dy = mouse.y - n.y;
           const hitR = Math.max(n.r + 3, 8);
           if (dx * dx + dy * dy < hitR * hitR) {
             hoveredIdx = i;
@@ -338,120 +349,73 @@ export default function SkillConstellation({ className }: Props) {
         }
       }
 
-      const highlightSet = new Set<number>();
-      if (hoveredIdx >= 0) {
-        for (const idx of getAncestors(hoveredIdx)) highlightSet.add(idx);
-        for (const idx of getDescendants(hoveredIdx)) highlightSet.add(idx);
-        const parentIdx = nodes[hoveredIdx].parentIdx;
-        if (parentIdx >= 0) {
-          for (let i = 0; i < nodes.length; i++) {
-            if (nodes[i].parentIdx === parentIdx) highlightSet.add(i);
-          }
-        }
-        for (const [from, to] of resolvedCrossLinks) {
-          if (highlightSet.has(from)) highlightSet.add(to);
-          if (highlightSet.has(to)) highlightSet.add(from);
-        }
-      }
+      const hl = hoveredIdx >= 0 ? getFamily(hoveredIdx) : new Set<number>();
 
-      // --- Tree connection lines ---
+      // Tree lines
       for (let i = 0; i < nodes.length; i++) {
-        const node = nodes[i];
-        if (node.parentIdx < 0) continue;
-        const parent = nodes[node.parentIdx];
-        const isHighlighted = highlightSet.has(i) && highlightSet.has(node.parentIdx);
-
+        const n = nodes[i];
+        if (n.parentIdx < 0) continue;
+        const p = nodes[n.parentIdx];
+        const lit = hl.has(i) && hl.has(n.parentIdx);
         ctx!.beginPath();
-        ctx!.moveTo(parent.x, parent.y);
-        ctx!.lineTo(node.x, node.y);
-        ctx!.strokeStyle = isHighlighted
-          ? hexWithAlpha(node.color, 0.3)
-          : hexWithAlpha(node.color, node.level === 1 ? 0.08 : 0.05);
-        ctx!.lineWidth = isHighlighted ? 1 : 0.4;
+        ctx!.moveTo(p.x, p.y);
+        ctx!.lineTo(n.x, n.y);
+        ctx!.strokeStyle = lit ? hexA(n.color, 0.3) : hexA(n.color, n.level === 1 ? 0.08 : 0.05);
+        ctx!.lineWidth = lit ? 1 : 0.4;
         ctx!.stroke();
       }
 
-      // --- Cross-cluster lines (subtle, dashed) ---
-      for (const [fromIdx, toIdx] of resolvedCrossLinks) {
-        const a = nodes[fromIdx];
-        const b = nodes[toIdx];
-        const isHighlighted = highlightSet.has(fromIdx) && highlightSet.has(toIdx);
-
+      // Cross-links
+      for (const [fi, ti] of resolvedCrossLinks) {
+        const a = nodes[fi],
+          b = nodes[ti];
+        const lit = hl.has(fi) && hl.has(ti);
         ctx!.beginPath();
         ctx!.moveTo(a.x, a.y);
         ctx!.lineTo(b.x, b.y);
-        ctx!.strokeStyle = isHighlighted
-          ? hexWithAlpha("#ffffff", 0.12)
-          : hexWithAlpha("#ffffff", 0.015);
-        ctx!.lineWidth = isHighlighted ? 0.6 : 0.2;
-        ctx!.setLineDash(isHighlighted ? [2, 3] : [2, 5]);
+        ctx!.strokeStyle = lit ? hexA("#fff", 0.12) : hexA("#fff", 0.015);
+        ctx!.lineWidth = lit ? 0.6 : 0.2;
+        ctx!.setLineDash(lit ? [2, 3] : [2, 5]);
         ctx!.stroke();
         ctx!.setLineDash([]);
       }
 
-      // --- Nodes ---
+      // Nodes
       for (let i = 0; i < nodes.length; i++) {
-        const node = nodes[i];
-        const isHovered = i === hoveredIdx;
-        const isInHighlight = highlightSet.has(i);
+        const n = nodes[i];
+        const hov = i === hoveredIdx;
+        const lit = hl.has(i);
 
-        let fillAlpha: number, strokeAlpha: number, strokeWidth: number;
-
-        if (isHovered) {
-          fillAlpha = 0.25;
-          strokeAlpha = 0.9;
-          strokeWidth = 2;
-        } else if (isInHighlight) {
-          fillAlpha = 0.15;
-          strokeAlpha = 0.65;
-          strokeWidth = 1.2;
-        } else if (node.level === 0) {
-          fillAlpha = 0.06;
-          strokeAlpha = 0.3;
-          strokeWidth = 1;
-        } else if (node.level === 1) {
-          fillAlpha = 0.04;
-          strokeAlpha = 0.18;
-          strokeWidth = 0.6;
-        } else {
-          fillAlpha = 0.03;
-          strokeAlpha = 0.14;
-          strokeWidth = 0.4;
-        }
+        const fa = hov ? 0.25 : lit ? 0.15 : n.level === 0 ? 0.06 : n.level === 1 ? 0.04 : 0.03;
+        const sa = hov ? 0.9 : lit ? 0.65 : n.level === 0 ? 0.3 : n.level === 1 ? 0.18 : 0.14;
+        const sw = hov ? 2 : lit ? 1.2 : n.level === 0 ? 1 : n.level === 1 ? 0.6 : 0.4;
 
         ctx!.beginPath();
-        ctx!.arc(node.x, node.y, node.r, 0, Math.PI * 2);
-        ctx!.fillStyle = hexWithAlpha(node.color, fillAlpha);
+        ctx!.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx!.fillStyle = hexA(n.color, fa);
         ctx!.fill();
-        ctx!.strokeStyle = hexWithAlpha(node.color, strokeAlpha);
-        ctx!.lineWidth = strokeWidth;
+        ctx!.strokeStyle = hexA(n.color, sa);
+        ctx!.lineWidth = sw;
         ctx!.stroke();
 
-        if (isHovered) {
+        if (hov) {
           ctx!.beginPath();
-          ctx!.arc(node.x, node.y, node.r + 4, 0, Math.PI * 2);
-          ctx!.strokeStyle = hexWithAlpha(node.color, 0.2);
+          ctx!.arc(n.x, n.y, n.r + 4, 0, Math.PI * 2);
+          ctx!.strokeStyle = hexA(n.color, 0.2);
           ctx!.lineWidth = 2;
           ctx!.stroke();
         }
 
-        // Labels: category always, subcategory + leaf only on highlight
-        const showLabel = node.level === 0 || isInHighlight;
-        if (showLabel) {
-          const fontSize = node.level === 0 ? 10 : node.level === 1 ? 8 : 7;
-          const bold = isHovered || (isInHighlight && node.level === 0);
-          ctx!.font = `${bold ? "bold " : ""}${fontSize}px ui-monospace, SFMono-Regular, Menlo, monospace`;
-
-          let labelAlpha: number;
-          if (isHovered) labelAlpha = 0.95;
-          else if (isInHighlight) labelAlpha = 0.7;
-          else if (node.level === 0) labelAlpha = 0.5;
-          else labelAlpha = 0.35;
-
-          ctx!.fillStyle = hexWithAlpha("#f7f7f8", labelAlpha);
+        // Labels
+        const show = n.level === 0 || lit;
+        if (show) {
+          const fs = n.level === 0 ? 10 : n.level === 1 ? 8 : 7;
+          ctx!.font = `${hov || (lit && n.level === 0) ? "bold " : ""}${fs}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+          const la = hov ? 0.95 : lit ? 0.7 : 0.5;
+          ctx!.fillStyle = hexA("#f7f7f8", la);
           ctx!.textAlign = "center";
           ctx!.textBaseline = "middle";
-          ctx!.fillText(node.label, node.x, node.y + node.r + fontSize + 1);
+          ctx!.fillText(n.label, n.x, n.y + n.r + fs + 1);
         }
       }
     }
@@ -487,7 +451,7 @@ export default function SkillConstellation({ className }: Props) {
   );
 }
 
-function hexWithAlpha(hex: string, alpha: number): string {
+function hexA(hex: string, alpha: number): string {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
