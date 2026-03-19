@@ -17,12 +17,14 @@ type IconName = keyof typeof ICON_MAP;
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen">
-      {/* Constellation — positioned absolute, covers right 65% of viewport, behind text */}
-      <div className="hidden lg:block absolute inset-y-0 right-0 w-[65%]">
+      {/* Constellation — covers right 65%, receives pointer events */}
+      <div className="hidden lg:block absolute inset-y-0 right-0 w-[65%] z-0">
         <SkillConstellation className="w-full h-full" />
       </div>
 
-      <div className="relative z-10 flex flex-col justify-center px-8 sm:px-12 lg:px-16 py-24 lg:py-0 min-h-screen text-center lg:text-left lg:max-w-[45%]">
+      {/* Text — pointer-events-none on the wrapper so clicks pass through to canvas,
+           but re-enable on interactive children (buttons, links) */}
+      <div className="relative z-10 flex flex-col justify-center px-8 sm:px-12 lg:px-16 py-24 lg:py-0 min-h-screen text-center lg:text-left lg:max-w-[45%] pointer-events-none">
         {/* System tag */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -101,7 +103,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.4 }}
-          className="mt-8 flex flex-row gap-3 justify-center lg:justify-start flex-wrap"
+          className="mt-8 flex flex-row gap-3 justify-center lg:justify-start flex-wrap pointer-events-auto"
         >
           <Link
             href="/projects"
@@ -122,7 +124,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.5 }}
-          className="mt-6 flex flex-row gap-5 justify-center lg:justify-start"
+          className="mt-6 flex flex-row gap-5 justify-center lg:justify-start pointer-events-auto"
         >
           {SOCIAL_LINKS.map((link) => {
             const IconComponent = ICON_MAP[link.icon as IconName];
