@@ -86,21 +86,21 @@ function buildNodes(): ConstellationNode[] {
   // Explicit category positions (fraction of canvas).
   // All in the right 55% of canvas (x: 0.45-0.95), full height (y: 0.08-0.85).
   // Each has an inward angle pointing toward center of the constellation.
-  const CENTER_X = 0.7;
-  const CENTER_Y = 0.45;
+  const CENTER_X = 0.68;
+  const CENTER_Y = 0.42;
 
   const catPositions = [
-    { cx: 0.5, cy: 0.1 }, // Languages — top-left area
-    { cx: 0.78, cy: 0.08 }, // AI/ML — top-right
-    { cx: 0.95, cy: 0.4 }, // Cloud & Infra — far right
-    { cx: 0.48, cy: 0.55 }, // Backend — mid-left
-    { cx: 0.72, cy: 0.82 }, // Frontend — bottom-center
-    { cx: 0.95, cy: 0.7 }, // Systems — bottom-right
+    { cx: 0.48, cy: 0.1 }, // Languages — top-left
+    { cx: 0.82, cy: 0.06 }, // AI/ML — top-right (more space from Languages)
+    { cx: 0.92, cy: 0.38 }, // Cloud & Infra — right (pulled in slightly)
+    { cx: 0.48, cy: 0.52 }, // Backend — mid-left
+    { cx: 0.72, cy: 0.72 }, // Frontend — bottom (pulled up from 0.82)
+    { cx: 0.92, cy: 0.62 }, // Systems — bottom-right (pulled up from 0.7)
   ];
 
-  // Orbital distances in PIXELS — children branch INWARD toward center
-  const SUB_DIST = 85;
-  const LEAF_DIST = 50;
+  // Orbital distances — children branch INWARD toward center
+  const SUB_DIST = 100; // bigger reach inward
+  const LEAF_DIST = 60; // leaves extend further into center
 
   Object.entries(CONSTELLATION_DATA).forEach(([catName, catData], catIdx) => {
     const pos = catPositions[catIdx % catPositions.length];
@@ -135,7 +135,7 @@ function buildNodes(): ConstellationNode[] {
     const subCount = catData.subcategories.length;
     catData.subcategories.forEach((sub, subIdx) => {
       // Fan out around the inward direction
-      const fanSpread = subCount > 1 ? (subIdx / (subCount - 1) - 0.5) * 1.2 : 0;
+      const fanSpread = subCount > 1 ? (subIdx / (subCount - 1) - 0.5) * 1.8 : 0;
       const subAngle = inwardAngle + fanSpread + (rng() - 0.5) * 0.3;
       const dist = SUB_DIST - 15 + rng() * 30;
 
