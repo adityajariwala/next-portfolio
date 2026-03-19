@@ -47,86 +47,71 @@ export const TECH_STACK = {
   },
 };
 
-// Richer constellation data derived from actual repo scans across ~/dev and ~/nanoclaw.
-// Each category has weighted items: size 1-3 (3 = most prominent / most used).
-// The constellation component reads this for varied node sizes and deeper branching.
-export const CONSTELLATION_DATA: Record<
-  string,
-  { color: string; items: { name: string; weight: number }[] }
-> = {
+// 3-level constellation data: Category → Subcategory → Items
+// Derived from actual repo scans across ~/dev and ~/nanoclaw.
+export interface ConstellationItem {
+  name: string;
+}
+export interface ConstellationSubcategory {
+  name: string;
+  items: ConstellationItem[];
+}
+export interface ConstellationCategory {
+  color: string;
+  subcategories: ConstellationSubcategory[];
+}
+export const CONSTELLATION_DATA: Record<string, ConstellationCategory> = {
   Languages: {
     color: "cyan",
-    items: [
-      { name: "TypeScript", weight: 3 },
-      { name: "Python", weight: 3 },
-      { name: "Rust", weight: 2 },
-      { name: "Go", weight: 2 },
-      { name: "Swift", weight: 1 },
-      { name: "JavaScript", weight: 2 },
-      { name: "SQL", weight: 1 },
-      { name: "Java", weight: 1 },
+    subcategories: [
+      { name: "Primary", items: [{ name: "TypeScript" }, { name: "Python" }] },
+      { name: "Systems", items: [{ name: "Rust" }, { name: "Go" }] },
+      { name: "Other", items: [{ name: "Swift" }, { name: "Java" }, { name: "SQL" }] },
     ],
   },
   "AI / ML": {
     color: "yellow",
-    items: [
-      { name: "LightGBM", weight: 2 },
-      { name: "scikit-learn", weight: 2 },
-      { name: "FAISS", weight: 2 },
-      { name: "SHAP", weight: 1 },
-      { name: "Ollama", weight: 2 },
-      { name: "Pandas", weight: 2 },
-      { name: "NumPy", weight: 1 },
-      { name: "Embeddings", weight: 1 },
-      { name: "RAG", weight: 2 },
-      { name: "Claude API", weight: 1 },
+    subcategories: [
+      { name: "LLMs", items: [{ name: "Claude" }, { name: "OpenAI" }, { name: "Ollama" }] },
+      {
+        name: "Frameworks",
+        items: [{ name: "LightGBM" }, { name: "scikit-learn" }, { name: "SHAP" }],
+      },
+      { name: "Data", items: [{ name: "Pandas" }, { name: "NumPy" }, { name: "FAISS" }] },
+      { name: "Patterns", items: [{ name: "RAG" }, { name: "Embeddings" }] },
     ],
   },
   "Cloud & Infra": {
     color: "green",
-    items: [
-      { name: "AWS", weight: 3 },
-      { name: "Docker", weight: 3 },
-      { name: "Kubernetes", weight: 2 },
-      { name: "Terraform", weight: 2 },
-      { name: "Vercel", weight: 2 },
-      { name: "GitHub Actions", weight: 1 },
-      { name: "Prometheus", weight: 1 },
-      { name: "Helm", weight: 1 },
+    subcategories: [
+      { name: "Cloud", items: [{ name: "AWS" }, { name: "GCP" }, { name: "Vercel" }] },
+      { name: "Containers", items: [{ name: "Kubernetes" }, { name: "Docker" }, { name: "Helm" }] },
+      { name: "IaC", items: [{ name: "Terraform" }, { name: "GitHub Actions" }] },
+      { name: "Monitoring", items: [{ name: "Prometheus" }, { name: "Grafana" }] },
     ],
   },
   Backend: {
     color: "purple",
-    items: [
-      { name: "Next.js", weight: 3 },
-      { name: "FastAPI", weight: 2 },
-      { name: "Express", weight: 2 },
-      { name: "Node.js", weight: 2 },
-      { name: "SQLite", weight: 2 },
-      { name: "GraphQL", weight: 1 },
-      { name: "Pydantic", weight: 1 },
-      { name: "Zod", weight: 1 },
+    subcategories: [
+      { name: "Web", items: [{ name: "Next.js" }, { name: "FastAPI" }, { name: "Express" }] },
+      { name: "Data", items: [{ name: "SQLite" }, { name: "GraphQL" }] },
+      { name: "Validation", items: [{ name: "Zod" }, { name: "Pydantic" }] },
     ],
   },
   Frontend: {
     color: "pink",
-    items: [
-      { name: "React", weight: 3 },
-      { name: "Tailwind", weight: 3 },
-      { name: "Framer Motion", weight: 2 },
-      { name: "SwiftUI", weight: 1 },
-      { name: "Tauri", weight: 2 },
-      { name: "ratatui", weight: 1 },
+    subcategories: [
+      { name: "Web", items: [{ name: "React" }, { name: "Tailwind" }, { name: "Framer Motion" }] },
+      { name: "Desktop", items: [{ name: "Tauri" }, { name: "ratatui" }] },
+      { name: "Mobile", items: [{ name: "SwiftUI" }] },
     ],
   },
   Systems: {
     color: "orange",
-    items: [
-      { name: "Tokio", weight: 2 },
-      { name: "Cargo", weight: 1 },
-      { name: "Go Modules", weight: 1 },
-      { name: "HNSW", weight: 1 },
-      { name: "Vector Search", weight: 2 },
+    subcategories: [
+      { name: "Rust", items: [{ name: "Tokio" }, { name: "Cargo" }] },
+      { name: "Go", items: [{ name: "Go Modules" }] },
+      { name: "Search", items: [{ name: "HNSW" }, { name: "Vector Search" }] },
     ],
   },
 };
