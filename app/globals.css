@@ -11,8 +11,10 @@
   --color-dark-500: #52525b;
   --color-dark-600: #3f3f46;
   --color-dark-700: #27272a;
-  --color-dark-800: #1a1a24;
-  --color-dark-900: #0d0d12;
+  --color-dark-800: #0d0d12;
+  --color-dark-900: #06060b;
+  --color-surface: rgba(255, 255, 255, 0.02);
+  --color-surface-border: #1a1a1a;
 
   --color-neon-cyan: #00f0ff;
   --color-neon-pink: #ff2d95;
@@ -20,6 +22,10 @@
   --color-neon-green: #39ff14;
   --color-neon-yellow: #fff01f;
   --color-neon-orange: #ff6b35;
+
+  /* Font Families */
+  --font-sans: var(--font-geist-sans);
+  --font-display: var(--font-display);
 
   /* Custom Animations */
   --animate-glow-pulse: glow-pulse 2s ease-in-out infinite;
@@ -207,6 +213,18 @@
   .cyber-button:hover {
     @apply bg-neon-cyan text-dark-900;
     box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+  }
+
+  /* Tile — refined card for redesigned pages */
+  .tile {
+    @apply bg-[--color-surface] border border-[--color-surface-border] rounded-xl p-6;
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .tile:hover {
+    @apply border-neon-cyan;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+    transform: scale(1.01);
   }
 }
 

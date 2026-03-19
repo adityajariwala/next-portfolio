@@ -13,11 +13,9 @@ export const OWNER_INFO = {
 };
 
 export const NAV_ITEMS = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { name: "Contact", href: "/contact" },
-  { name: "Projects", href: "/projects" },
-  { name: "Resume", href: "/resume" },
+  { name: "Projects", path: "/projects" },
+  { name: "Blog", path: "/blog" },
+  { name: "Resume", path: "/resume" },
 ];
 
 export const ROLES = [
@@ -145,6 +143,20 @@ export const EDUCATION = [
       "Mathematics focus in real and complex analysis, group/ring theory, and abstract algebra",
     ],
   },
+];
+
+export const SOCIAL_LINKS = [
+  { platform: "GitHub", url: OWNER_INFO.github, icon: "Github" },
+  { platform: "LinkedIn", url: OWNER_INFO.linkedin, icon: "Linkedin" },
+  { platform: "Email", url: `mailto:${OWNER_INFO.email}`, icon: "Mail" },
+];
+
+export const FEATURED_PROJECTS: string[] = ["semantic-cache", "next-portfolio"];
+
+export const CAREER_TIMELINE = [
+  { company: "Red Hat", role: "Technical Consultant", period: "2020–2022", color: "#39ff14" },
+  { company: "D2iQ", role: "ML Engineer II", period: "2022–2023", color: "#b829dd" },
+  { company: "Capital One", role: "Senior SWE", period: "2023–Present", color: "#00f0ff" },
 ];
 
 export const LANGUAGE_COLORS: Record<string, string> = {

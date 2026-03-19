@@ -1,13 +1,19 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { OWNER_INFO } from "@/lib/constants";
 import { PersonStructuredData, WebsiteStructuredData } from "@/components/StructuredData";
 
-const inter = Inter({ subsets: ["latin"] });
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-display",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(`https://${OWNER_INFO.domain}`),
@@ -49,7 +55,7 @@ export const metadata: Metadata = {
     description: OWNER_INFO.bio,
     images: [
       {
-        url: "/og-image.png", // You'll need to add this image
+        url: "/aditya.jpg",
         width: 1200,
         height: 630,
         alt: `${OWNER_INFO.name} - ${OWNER_INFO.title}`,
@@ -61,7 +67,7 @@ export const metadata: Metadata = {
     title: `${OWNER_INFO.name} - ${OWNER_INFO.title}`,
     description: OWNER_INFO.bio,
     creator: "@AdityaJ15",
-    images: ["/og-image.png"],
+    images: ["/aditya.jpg"],
   },
   robots: {
     index: true,
@@ -74,9 +80,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  verification: {
-    google: "your-google-verification-code", // Add your verification code
-  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -86,10 +89,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <PersonStructuredData />
         <WebsiteStructuredData />
       </head>
-      <body className={inter.className}>
+      <body className={`${GeistSans.variable} ${jetbrainsMono.variable} font-sans`}>
         <Navbar />
         <main className="min-h-screen pt-16">{children}</main>
         <Footer />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
