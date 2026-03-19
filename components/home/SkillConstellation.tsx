@@ -78,21 +78,20 @@ function buildNodes(): ConstellationNode[] {
   const rng = mulberry32(42);
   const nodes: ConstellationNode[] = [];
 
-  // Category centers as fractions — spread across the full canvas
-  // Staggered 2 rows: top row at ~30%, bottom row at ~70%
+  // Canvas is full viewport. Categories occupy the right 60% (x: 0.4-0.92)
+  // and full height with padding (y: 0.12-0.82). Staggered 2-row layout.
   const regions = [
-    { cx: 0.15, cy: 0.3 }, // Languages
-    { cx: 0.5, cy: 0.22 }, // AI/ML
-    { cx: 0.85, cy: 0.32 }, // Cloud & Infra
-    { cx: 0.2, cy: 0.72 }, // Backend
-    { cx: 0.55, cy: 0.78 }, // Frontend
-    { cx: 0.85, cy: 0.68 }, // Systems
+    { cx: 0.42, cy: 0.2 }, // Languages
+    { cx: 0.65, cy: 0.14 }, // AI/ML
+    { cx: 0.88, cy: 0.22 }, // Cloud & Infra
+    { cx: 0.48, cy: 0.62 }, // Backend
+    { cx: 0.7, cy: 0.7 }, // Frontend
+    { cx: 0.9, cy: 0.58 }, // Systems
   ];
 
-  // Orbital distances in PIXELS (not fractions)
-  // This ensures consistent visual spacing regardless of canvas size
-  const SUB_DIST = 80 + 20; // subcategory: 80-100px from parent
-  const LEAF_DIST = 45 + 15; // leaf: 45-60px further from subcategory
+  // Orbital distances in PIXELS — consistent visual spacing
+  const SUB_DIST = 80; // subcategory: 60-100px from parent
+  const LEAF_DIST = 50; // leaf: 35-65px further from subcategory
 
   Object.entries(CONSTELLATION_DATA).forEach(([catName, catData], catIdx) => {
     const region = regions[catIdx % regions.length];

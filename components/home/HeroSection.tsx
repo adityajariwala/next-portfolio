@@ -17,8 +17,8 @@ type IconName = keyof typeof ICON_MAP;
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen">
-      {/* Constellation — covers right 65%, receives pointer events */}
-      <div className="hidden lg:block absolute inset-y-0 right-0 w-[65%] z-0">
+      {/* Constellation — covers full viewport as background, pointer events enabled */}
+      <div className="hidden lg:block absolute inset-0 z-0">
         <SkillConstellation className="w-full h-full" />
       </div>
 
