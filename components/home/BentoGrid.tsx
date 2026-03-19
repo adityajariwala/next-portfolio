@@ -5,6 +5,7 @@ import Tile from "@/components/ui/Tile";
 import CareerTimeline from "@/components/home/CareerTimeline";
 import AnimatedTile from "@/components/home/AnimatedTile";
 import ContactCTATile from "@/components/home/ContactCTATile";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Star } from "lucide-react";
 
@@ -69,13 +70,15 @@ export default async function BentoGrid() {
         <AnimatedTile delay={0} className="lg:row-span-2">
           <Tile accent="cyan" className="h-full flex flex-col">
             {/* Avatar */}
-            <div
-              className="mb-4 flex h-16 w-16 items-center justify-center rounded-full text-xl font-bold text-dark-900"
-              style={{
-                background: "linear-gradient(135deg, #00f0ff, #b829dd)",
-              }}
-            >
-              AJ
+            <div className="mb-4 h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-neon-cyan shadow-lg shadow-neon-cyan/30">
+              <Image
+                src="/aditya.jpg"
+                alt={OWNER_INFO.name}
+                width={64}
+                height={64}
+                className="h-full w-full object-cover"
+                priority
+              />
             </div>
 
             <h2
