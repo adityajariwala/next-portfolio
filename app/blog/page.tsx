@@ -1,10 +1,13 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { Suspense, useState, useEffect, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Calendar, Clock, Tag, Search } from "lucide-react";
-import { Card, CardHeader, CardContent } from "@/components/ui/Card";
+import Image from "next/image";
+import { Calendar, Clock, Tag, Search, ArrowRight } from "lucide-react";
+import Tile from "@/components/ui/Tile";
+import { Card, CardContent } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 
 interface BlogPost {
@@ -19,13 +22,21 @@ interface BlogPost {
 }
 
 export default function BlogPage() {
+  return (
+    <Suspense>
+      <BlogPageContent />
+    </Suspense>
+  );
+}
+
+function BlogPageContent() {
+  const searchParams = useSearchParams();
   const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [selectedTag, setSelectedTag] = useState<string>("");
+  const [selectedTag, setSelectedTag] = useState<string>(searchParams.get("tag") ?? "");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch blog posts
     fetch("/api/blog")
       .then((res) => res.json())
       .then((data) => {
@@ -38,14 +49,12 @@ export default function BlogPage() {
   const filteredPosts = useMemo(() => {
     let filtered = posts;
 
-    // Filter by tag
     if (selectedTag) {
       filtered = filtered.filter((post) =>
         post.tags.map((t) => t.toLowerCase()).includes(selectedTag.toLowerCase())
       );
     }
 
-    // Filter by search query
     if (searchQuery) {
       filtered = filtered.filter(
         (post) =>
@@ -67,6 +76,9 @@ export default function BlogPage() {
     });
   };
 
+  const featuredPost = filteredPosts[0] ?? null;
+  const remainingPosts = filteredPosts.slice(1);
+
   return (
     <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
@@ -77,10 +89,15 @@ export default function BlogPage() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 gradient-text pb-2">Blog</h1>
+          <h1
+            className="text-5xl md:text-6xl font-bold mb-4 gradient-text pb-2"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Blog
+          </h1>
           <p className="text-dark-300 text-lg max-w-2xl mx-auto">
             Thoughts on the state of AI and software engineering today, lessons learned, case
-            studies, & the occasional rant.
+            studies, &amp; the occasional rant.
           </p>
         </motion.div>
 
@@ -153,7 +170,7 @@ export default function BlogPage() {
           )}
         </motion.div>
 
-        {/* Posts Grid */}
+        {/* Posts */}
         {loading ? (
           <div className="text-center py-20">
             <p className="text-dark-300">Loading posts...</p>
@@ -189,68 +206,164 @@ export default function BlogPage() {
             </Card>
           </motion.div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredPosts.map((post, index) => (
+          <>
+            {/* Featured Post — full-width hero tile */}
+            {featuredPost && (
               <motion.div
-                key={post.slug}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="mb-10"
               >
-                <Link href={`/blog/${post.slug}`}>
-                  <Card
-                    glow
-                    className="h-full hover:border-neon-cyan transition-all duration-300 cursor-pointer"
-                  >
-                    {post.coverImage && (
-                      <div className="aspect-video w-full overflow-hidden rounded-t-lg">
-                        <img
-                          src={post.coverImage}
-                          alt={post.title}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                <Link href={`/blog/${featuredPost.slug}`}>
+                  <Tile accent="cyan" className="group cursor-pointer overflow-hidden">
+                    {featuredPost.coverImage && (
+                      <div className="aspect-[21/9] w-full overflow-hidden">
+                        <Image
+                          src={featuredPost.coverImage}
+                          alt={featuredPost.title}
+                          width={1200}
+                          height={514}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                       </div>
                     )}
-                    <CardHeader>
-                      <h2 className="text-2xl font-bold text-neon-cyan hover:text-neon-pink transition-colors line-clamp-2">
-                        {post.title}
+                    <div className="p-8 md:p-10">
+                      {/* Featured label */}
+                      <span
+                        className="inline-block mb-4 text-xs uppercase tracking-widest text-neon-cyan border border-neon-cyan px-2 py-0.5 rounded"
+                        style={{ fontFamily: "var(--font-display)" }}
+                      >
+                        Latest Post
+                      </span>
+
+                      <h2 className="text-3xl md:text-4xl font-bold text-dark-50 group-hover:text-neon-cyan transition-colors duration-300 mb-4 leading-tight">
+                        {featuredPost.title}
                       </h2>
-                      <div className="flex flex-wrap gap-3 text-sm text-dark-400 mt-3">
-                        <div className="flex items-center gap-1">
-                          <Calendar size={14} />
-                          <span>{formatDate(post.date)}</span>
+
+                      <p className="text-dark-300 text-lg mb-6 line-clamp-3 max-w-3xl">
+                        {featuredPost.excerpt}
+                      </p>
+
+                      <div className="flex flex-wrap items-center gap-4">
+                        {/* Meta */}
+                        <div
+                          className="flex items-center gap-4 text-sm text-dark-400"
+                          style={{ fontFamily: "var(--font-display)" }}
+                        >
+                          <span className="flex items-center gap-1.5">
+                            <Calendar size={14} />
+                            {formatDate(featuredPost.date)}
+                          </span>
+                          <span className="flex items-center gap-1.5">
+                            <Clock size={14} />
+                            {featuredPost.readingTime}
+                          </span>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <Clock size={14} />
-                          <span>{post.readingTime}</span>
-                        </div>
+
+                        {/* Tags */}
+                        {featuredPost.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-2">
+                            {featuredPost.tags.slice(0, 3).map((tag) => (
+                              <span
+                                key={tag}
+                                className="px-2 py-0.5 bg-dark-700 text-neon-purple text-xs rounded border border-dark-600"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* CTA */}
+                        <span className="ml-auto flex items-center gap-1.5 text-neon-cyan text-sm font-medium group-hover:gap-2.5 transition-all duration-200">
+                          Read more <ArrowRight size={16} />
+                        </span>
                       </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-dark-300 line-clamp-3 mb-4">{post.excerpt}</p>
-                      {post.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                          {post.tags.slice(0, 3).map((tag) => (
-                            <span
-                              key={tag}
-                              className="px-2 py-1 bg-dark-700 text-neon-purple text-xs rounded"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                          {post.tags.length > 3 && (
-                            <span className="px-2 py-1 text-dark-400 text-xs">
-                              +{post.tags.length - 3} more
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </Tile>
                 </Link>
               </motion.div>
-            ))}
-          </div>
+            )}
+
+            {/* Remaining posts — 2-col grid */}
+            {remainingPosts.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {remainingPosts.map((post, index) => (
+                  <motion.div
+                    key={post.slug}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.08 }}
+                  >
+                    <Link href={`/blog/${post.slug}`} className="h-full block">
+                      <Tile
+                        accent="purple"
+                        className="group h-full cursor-pointer overflow-hidden flex flex-col"
+                      >
+                        {post.coverImage && (
+                          <div className="aspect-video w-full overflow-hidden">
+                            <Image
+                              src={post.coverImage}
+                              alt={post.title}
+                              width={600}
+                              height={338}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          </div>
+                        )}
+                        <div className="p-6 flex flex-col flex-1">
+                          <h2 className="text-xl font-bold text-dark-50 group-hover:text-neon-cyan transition-colors duration-300 mb-3 line-clamp-2">
+                            {post.title}
+                          </h2>
+
+                          <p className="text-dark-300 text-sm line-clamp-3 mb-4 flex-1">
+                            {post.excerpt}
+                          </p>
+
+                          {/* Meta */}
+                          <div
+                            className="flex items-center gap-3 text-xs text-dark-400 mb-4"
+                            style={{ fontFamily: "var(--font-display)" }}
+                          >
+                            <span className="flex items-center gap-1">
+                              <Calendar size={12} />
+                              {formatDate(post.date)}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock size={12} />
+                              {post.readingTime}
+                            </span>
+                          </div>
+
+                          {/* Tags */}
+                          {post.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-2">
+                              {post.tags.slice(0, 3).map((tag) => (
+                                <span
+                                  key={tag}
+                                  className="px-2 py-0.5 bg-dark-700 text-neon-purple text-xs rounded border border-dark-600"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                              {post.tags.length > 3 && (
+                                <span className="px-2 py-0.5 text-dark-400 text-xs">
+                                  +{post.tags.length - 3} more
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </Tile>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </>
         )}
 
         {/* Results count */}
