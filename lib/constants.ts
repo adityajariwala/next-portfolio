@@ -47,6 +47,90 @@ export const TECH_STACK = {
   },
 };
 
+// Richer constellation data derived from actual repo scans across ~/dev and ~/nanoclaw.
+// Each category has weighted items: size 1-3 (3 = most prominent / most used).
+// The constellation component reads this for varied node sizes and deeper branching.
+export const CONSTELLATION_DATA: Record<
+  string,
+  { color: string; items: { name: string; weight: number }[] }
+> = {
+  Languages: {
+    color: "cyan",
+    items: [
+      { name: "TypeScript", weight: 3 },
+      { name: "Python", weight: 3 },
+      { name: "Rust", weight: 2 },
+      { name: "Go", weight: 2 },
+      { name: "Swift", weight: 1 },
+      { name: "JavaScript", weight: 2 },
+      { name: "SQL", weight: 1 },
+      { name: "Java", weight: 1 },
+    ],
+  },
+  "AI / ML": {
+    color: "yellow",
+    items: [
+      { name: "LightGBM", weight: 2 },
+      { name: "scikit-learn", weight: 2 },
+      { name: "FAISS", weight: 2 },
+      { name: "SHAP", weight: 1 },
+      { name: "Ollama", weight: 2 },
+      { name: "Pandas", weight: 2 },
+      { name: "NumPy", weight: 1 },
+      { name: "Embeddings", weight: 1 },
+      { name: "RAG", weight: 2 },
+      { name: "Claude API", weight: 1 },
+    ],
+  },
+  "Cloud & Infra": {
+    color: "green",
+    items: [
+      { name: "AWS", weight: 3 },
+      { name: "Docker", weight: 3 },
+      { name: "Kubernetes", weight: 2 },
+      { name: "Terraform", weight: 2 },
+      { name: "Vercel", weight: 2 },
+      { name: "GitHub Actions", weight: 1 },
+      { name: "Prometheus", weight: 1 },
+      { name: "Helm", weight: 1 },
+    ],
+  },
+  Backend: {
+    color: "purple",
+    items: [
+      { name: "Next.js", weight: 3 },
+      { name: "FastAPI", weight: 2 },
+      { name: "Express", weight: 2 },
+      { name: "Node.js", weight: 2 },
+      { name: "SQLite", weight: 2 },
+      { name: "GraphQL", weight: 1 },
+      { name: "Pydantic", weight: 1 },
+      { name: "Zod", weight: 1 },
+    ],
+  },
+  Frontend: {
+    color: "pink",
+    items: [
+      { name: "React", weight: 3 },
+      { name: "Tailwind", weight: 3 },
+      { name: "Framer Motion", weight: 2 },
+      { name: "SwiftUI", weight: 1 },
+      { name: "Tauri", weight: 2 },
+      { name: "ratatui", weight: 1 },
+    ],
+  },
+  Systems: {
+    color: "orange",
+    items: [
+      { name: "Tokio", weight: 2 },
+      { name: "Cargo", weight: 1 },
+      { name: "Go Modules", weight: 1 },
+      { name: "HNSW", weight: 1 },
+      { name: "Vector Search", weight: 2 },
+    ],
+  },
+};
+
 export const EXPERIENCE = [
   {
     title: "Senior Software Engineer",

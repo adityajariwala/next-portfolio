@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
-import { TECH_STACK } from "@/lib/constants";
+import { CONSTELLATION_DATA } from "@/lib/constants";
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
 interface ConstellationNode {
-  /** display label */
   label: string;
   /** base x (fraction 0-1 of canvas) */
   bx: number;
@@ -41,7 +40,7 @@ interface Props {
 }
 
 // ---------------------------------------------------------------------------
-// Colour map
+// Colour map — 6 categories
 // ---------------------------------------------------------------------------
 
 const COLOR_MAP: Record<string, string> = {
@@ -49,6 +48,8 @@ const COLOR_MAP: Record<string, string> = {
   purple: "#b829dd",
   green: "#39ff14",
   yellow: "#fff01f",
+  pink: "#ff2d95",
+  orange: "#ff6b35",
 };
 
 // ---------------------------------------------------------------------------
@@ -67,63 +68,79 @@ function mulberry32(seed: number) {
 }
 
 // ---------------------------------------------------------------------------
-// Build node list
+// Build node list from CONSTELLATION_DATA
 // ---------------------------------------------------------------------------
 
 function buildNodes(): ConstellationNode[] {
   const rng = mulberry32(42);
   const nodes: ConstellationNode[] = [];
 
-  // Category centre regions — spread across the canvas
+  // 6 category regions arranged in a hex-ish pattern for visual appeal
   const categoryRegions: { cx: number; cy: number }[] = [
-    { cx: 0.22, cy: 0.28 }, // Languages – top-left area
-    { cx: 0.75, cy: 0.25 }, // AI/ML – top-right area
-    { cx: 0.28, cy: 0.72 }, // Cloud & DevOps – bottom-left
-    { cx: 0.72, cy: 0.7 }, // Backend – bottom-right
+    { cx: 0.2, cy: 0.22 }, // Languages – top-left
+    { cx: 0.75, cy: 0.18 }, // AI/ML – top-right
+    { cx: 0.12, cy: 0.6 }, // Cloud & Infra – mid-left
+    { cx: 0.82, cy: 0.55 }, // Backend – mid-right
+    { cx: 0.35, cy: 0.82 }, // Frontend – bottom-left
+    { cx: 0.65, cy: 0.82 }, // Systems – bottom-right
   ];
 
-  const categories = Object.entries(TECH_STACK);
+  const categories = Object.entries(CONSTELLATION_DATA);
 
   categories.forEach(([catName, catData], catIdx) => {
-    const region = categoryRegions[catIdx];
+    const region = categoryRegions[catIdx % categoryRegions.length];
     const color = COLOR_MAP[catData.color] ?? "#00f0ff";
 
-    // Category node
+    // Category node (largest)
     const catNodeIdx = nodes.length;
     nodes.push({
       label: catName,
-      bx: region.cx + (rng() - 0.5) * 0.06,
-      by: region.cy + (rng() - 0.5) * 0.06,
+      bx: region.cx + (rng() - 0.5) * 0.04,
+      by: region.cy + (rng() - 0.5) * 0.04,
       x: 0,
       y: 0,
-      r: 20 + rng() * 4, // 20-24
+      r: 22 + rng() * 4, // 22-26
       color,
       isCategory: true,
       parentIdx: -1,
       phase: rng() * Math.PI * 2,
       driftAx: 2 + rng() * 2,
       driftAy: 2 + rng() * 2,
-      driftPeriod: 3000 + rng() * 3000,
+      driftPeriod: 4000 + rng() * 3000,
     });
 
-    // Item nodes — satellites around category centre
-    catData.items.forEach((item) => {
-      const angle = rng() * Math.PI * 2;
-      const dist = 0.06 + rng() * 0.08; // distance from category centre
+    // Item nodes — varied sizes based on weight
+    // Arrange items in concentric rings: weight 3 closest, weight 1 farthest
+    const sorted = [...catData.items].sort((a, b) => b.weight - a.weight);
+    const totalItems = sorted.length;
+
+    sorted.forEach((item, itemIdx) => {
+      // Spread items in a spiral-ish pattern
+      const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // ~137.5 degrees
+      const angle = goldenAngle * itemIdx + rng() * 0.4;
+
+      // Distance from center: heavier items closer, lighter ones orbit farther out
+      const ringBase = item.weight === 3 ? 0.05 : item.weight === 2 ? 0.09 : 0.13;
+      const dist = ringBase + rng() * 0.04 + (itemIdx / totalItems) * 0.03;
+
+      // Radius based on weight: weight 3 = large, weight 1 = tiny
+      const radiusMap = { 3: 12 + rng() * 4, 2: 8 + rng() * 3, 1: 5 + rng() * 2 };
+      const r = radiusMap[item.weight as 1 | 2 | 3] ?? 8;
+
       nodes.push({
-        label: item,
+        label: item.name,
         bx: region.cx + Math.cos(angle) * dist,
         by: region.cy + Math.sin(angle) * dist,
         x: 0,
         y: 0,
-        r: 8 + rng() * 6, // 8-14
+        r,
         color,
         isCategory: false,
         parentIdx: catNodeIdx,
         phase: rng() * Math.PI * 2,
-        driftAx: 1.5 + rng() * 2.5,
-        driftAy: 1.5 + rng() * 2.5,
-        driftPeriod: 3000 + rng() * 3000,
+        driftAx: 1 + rng() * 2.5,
+        driftAy: 1 + rng() * 2.5,
+        driftPeriod: 3000 + rng() * 4000,
       });
     });
   });
@@ -171,7 +188,6 @@ export default function SkillConstellation({ className }: Props) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Initial sizing
     handleResize();
 
     const prefersReduced =
@@ -224,7 +240,6 @@ export default function SkillConstellation({ className }: Props) {
       const h = cssHeight();
       const mouse = mouseRef.current;
 
-      // Parallax offset
       let px = 0;
       let py = 0;
       if (mouse && !isMobile && !prefersReduced) {
@@ -237,14 +252,12 @@ export default function SkillConstellation({ className }: Props) {
         let y = node.by * h;
 
         if (!prefersReduced && !isMobile) {
-          // Drift
           const driftX = Math.sin((t / node.driftPeriod) * Math.PI * 2 + node.phase) * node.driftAx;
           const driftY =
             Math.cos((t / node.driftPeriod) * Math.PI * 2 + node.phase * 1.3) * node.driftAy;
           x += driftX;
           y += driftY;
 
-          // Cursor gravity
           if (mouse) {
             const dx = mouse.x - x;
             const dy = mouse.y - y;
@@ -256,7 +269,6 @@ export default function SkillConstellation({ className }: Props) {
             }
           }
 
-          // Parallax
           x += px;
           y += py;
         }
@@ -266,7 +278,7 @@ export default function SkillConstellation({ className }: Props) {
       }
     }
 
-    function draw(_t: number) {
+    function draw() {
       const w = cssWidth();
       const h = cssHeight();
       ctx!.clearRect(0, 0, w, h);
@@ -280,37 +292,54 @@ export default function SkillConstellation({ className }: Props) {
           const n = nodes[i];
           const dx = mouse.x - n.x;
           const dy = mouse.y - n.y;
-          if (dx * dx + dy * dy < n.r * n.r) {
+          if (dx * dx + dy * dy < (n.r + 4) * (n.r + 4)) {
             hoveredIdx = i;
             break;
           }
         }
       }
 
-      // Connection lines
-      for (const node of nodes) {
+      // Connection lines — draw between parent and child nodes
+      for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i];
         if (node.parentIdx < 0) continue;
         const parent = nodes[node.parentIdx];
 
-        // Check if this connection should be highlighted
-        const nodeIdx = nodes.indexOf(node);
         const isHighlighted =
           hoveredIdx >= 0 &&
-          (hoveredIdx === nodeIdx ||
+          (hoveredIdx === i ||
             hoveredIdx === node.parentIdx ||
-            // If hovered node is a category, highlight all its children
             (nodes[hoveredIdx].isCategory && hoveredIdx === node.parentIdx) ||
-            // If hovered node is a child, highlight sibling connections via shared parent
             (!nodes[hoveredIdx].isCategory && nodes[hoveredIdx].parentIdx === node.parentIdx));
 
         ctx!.beginPath();
         ctx!.moveTo(parent.x, parent.y);
         ctx!.lineTo(node.x, node.y);
         ctx!.strokeStyle = isHighlighted
-          ? hexWithAlpha(node.color, 0.35)
-          : hexWithAlpha(node.color, 0.07);
-        ctx!.lineWidth = isHighlighted ? 1.2 : 0.6;
+          ? hexWithAlpha(node.color, 0.3)
+          : hexWithAlpha(node.color, 0.05);
+        ctx!.lineWidth = isHighlighted ? 1 : 0.4;
         ctx!.stroke();
+      }
+
+      // Also draw faint inter-category lines between nearby category nodes
+      const catNodes = nodes.filter((n) => n.isCategory);
+      for (let i = 0; i < catNodes.length; i++) {
+        for (let j = i + 1; j < catNodes.length; j++) {
+          const a = catNodes[i];
+          const b = catNodes[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 300) {
+            ctx!.beginPath();
+            ctx!.moveTo(a.x, a.y);
+            ctx!.lineTo(b.x, b.y);
+            ctx!.strokeStyle = hexWithAlpha("#ffffff", 0.02);
+            ctx!.lineWidth = 0.3;
+            ctx!.stroke();
+          }
+        }
       }
 
       // Nodes
@@ -328,32 +357,40 @@ export default function SkillConstellation({ className }: Props) {
         // Circle fill
         ctx!.beginPath();
         ctx!.arc(node.x, node.y, node.r, 0, Math.PI * 2);
-        ctx!.fillStyle = hexWithAlpha(node.color, highlight ? 0.18 : 0.06);
+        ctx!.fillStyle = hexWithAlpha(node.color, highlight ? 0.2 : node.isCategory ? 0.08 : 0.04);
         ctx!.fill();
 
         // Circle stroke
-        ctx!.strokeStyle = hexWithAlpha(node.color, highlight ? 0.8 : node.isCategory ? 0.4 : 0.2);
-        ctx!.lineWidth = highlight ? 1.8 : node.isCategory ? 1.2 : 0.7;
+        ctx!.strokeStyle = hexWithAlpha(
+          node.color,
+          highlight ? 0.85 : node.isCategory ? 0.4 : node.r > 10 ? 0.2 : 0.12
+        );
+        ctx!.lineWidth = highlight ? 1.8 : node.isCategory ? 1.2 : node.r > 10 ? 0.8 : 0.5;
         ctx!.stroke();
 
         // Glow on hover
         if (isHovered) {
           ctx!.beginPath();
-          ctx!.arc(node.x, node.y, node.r + 4, 0, Math.PI * 2);
-          ctx!.strokeStyle = hexWithAlpha(node.color, 0.25);
+          ctx!.arc(node.x, node.y, node.r + 5, 0, Math.PI * 2);
+          ctx!.strokeStyle = hexWithAlpha(node.color, 0.2);
           ctx!.lineWidth = 2;
           ctx!.stroke();
         }
 
-        // Label
-        const fontSize = node.isCategory ? 11 : 9;
-        ctx!.font = `${highlight ? "bold " : ""}${fontSize}px ui-monospace, SFMono-Regular, Menlo, monospace`;
-        ctx!.fillStyle = hexWithAlpha("#f7f7f8", highlight ? 0.95 : node.isCategory ? 0.7 : 0.45);
-        ctx!.textAlign = "center";
-        ctx!.textBaseline = "middle";
-
-        const labelY = node.y + node.r + fontSize + 2;
-        ctx!.fillText(node.label, node.x, labelY);
+        // Label — only show for category nodes and large items (weight 2-3) by default
+        // Show all labels when hovering a cluster
+        const showLabel = node.isCategory || node.r >= 8 || highlight;
+        if (showLabel) {
+          const fontSize = node.isCategory ? 11 : node.r >= 10 ? 9 : 7;
+          ctx!.font = `${highlight ? "bold " : ""}${fontSize}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+          ctx!.fillStyle = hexWithAlpha(
+            "#f7f7f8",
+            highlight ? 0.95 : node.isCategory ? 0.65 : node.r >= 10 ? 0.4 : 0.25
+          );
+          ctx!.textAlign = "center";
+          ctx!.textBaseline = "middle";
+          ctx!.fillText(node.label, node.x, node.y + node.r + fontSize + 2);
+        }
       }
     }
 
@@ -362,13 +399,12 @@ export default function SkillConstellation({ className }: Props) {
     // -------------------------------------------------------------------
 
     if (prefersReduced || isMobile) {
-      // Static render
       resolvePositions(0);
-      draw(0);
+      draw();
     } else {
       const loop = (t: number) => {
         resolvePositions(t);
-        draw(t);
+        draw();
         rafRef.current = requestAnimationFrame(loop);
       };
       rafRef.current = requestAnimationFrame(loop);
@@ -402,7 +438,6 @@ export default function SkillConstellation({ className }: Props) {
 // ---------------------------------------------------------------------------
 
 function hexWithAlpha(hex: string, alpha: number): string {
-  // Parse hex
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
