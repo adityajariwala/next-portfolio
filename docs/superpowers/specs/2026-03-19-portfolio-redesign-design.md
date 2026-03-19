@@ -209,7 +209,7 @@ Keep `lib/constants.ts` as the single source of truth. Restructure to better mat
 - **Next.js 16** with App Router (already in use)
 - **Tailwind CSS v4** (already in use)
 - **Framer Motion** for all animations (already in use)
-- **Canvas or SVG** for hero constellation — SVG for accessibility, Canvas if performance requires it
+- **HTML5 Canvas** for hero constellation (chosen for performance with many animated nodes)
 - **GitHub API** for projects and stats — consider server-side caching to avoid rate limits
 - **Responsive:** Mobile-first using Tailwind default breakpoints (`sm:640px`, `md:768px`, `lg:1024px`). Bento grid: 1 column on mobile, 2 columns at `md`, full 3-column layout at `lg`. Hero constellation becomes static decorative dots on mobile (no animation, no interaction). All tiles stack vertically on mobile.
 - **Performance budget:** Hero constellation must not impact FCP/LCP. Lazy-load below-fold tiles. Use `will-change` sparingly.
