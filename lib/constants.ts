@@ -18,16 +18,6 @@ export const NAV_ITEMS = [
   { name: "Resume", path: "/resume" },
 ];
 
-export const ROLES = [
-  "Senior Software Engineer",
-  "AI/ML Engineer",
-  "Kubernetes Platform Developer",
-  "Cloud Architect",
-  "Full Stack Engineer",
-  "Lifelong Learner",
-  "Teacher and Mentor",
-];
-
 export const SKILLS = {
   Languages: ["Python", "Go", "TypeScript", "JavaScript", "Java", "C#", "SQL"],
   Frontend: ["React", "Next.js", "Angular", "Vue.js", "Tailwind CSS", "TypeScript"],
