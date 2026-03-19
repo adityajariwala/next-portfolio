@@ -98,12 +98,12 @@ function buildNodes(): ConstellationNode[] {
     2.9, // Frontend — bottom
     3.6, // Systems — lower-right
   ];
-  const ELLIPSE_RX = 0.28; // horizontal radius as fraction of canvas width
-  const ELLIPSE_RY = 0.32; // vertical radius as fraction of canvas height
+  const ELLIPSE_RX = 0.42; // much wider — categories near edges of canvas
+  const ELLIPSE_RY = 0.42; // much taller — full vertical spread
 
   // Orbital distances in PIXELS — children branch INWARD
-  const SUB_DIST = 70; // subcategory distance from parent (toward center)
-  const LEAF_DIST = 40; // leaf distance further inward from subcategory
+  const SUB_DIST = 110; // subcategory: 95-125px from parent
+  const LEAF_DIST = 65; // leaf: 50-80px further inward from subcategory
 
   Object.entries(CONSTELLATION_DATA).forEach(([catName, catData], catIdx) => {
     const angle = catAngles[catIdx % catAngles.length];
