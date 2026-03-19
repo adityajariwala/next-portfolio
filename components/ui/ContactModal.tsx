@@ -252,7 +252,7 @@ export default function ContactModal() {
                   {/* Submit */}
                   <Button
                     type="submit"
-                    variant="cyber"
+                    variant="accent"
                     className="w-full flex items-center justify-center gap-2"
                     disabled={isSubmitting}
                   >

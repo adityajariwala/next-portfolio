@@ -142,7 +142,7 @@ export default function Projects() {
               <p className="text-neon-pink text-lg mb-6 font-mono">
                 Failed to load projects: {error}
               </p>
-              <Button variant="cyber" onClick={fetchRepos}>
+              <Button variant="accent" onClick={fetchRepos}>
                 Try Again
               </Button>
             </div>

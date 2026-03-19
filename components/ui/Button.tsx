@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { ButtonHTMLAttributes, forwardRef } from "react";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "ghost" | "cyber";
+  variant?: "primary" | "secondary" | "ghost" | "accent";
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -13,7 +13,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       secondary:
         "bg-dark-800 text-neon-cyan border-2 border-neon-cyan hover:bg-neon-cyan hover:text-dark-900 font-bold px-6 py-3",
       ghost: "text-neon-cyan hover:text-neon-pink hover:bg-dark-800 px-6 py-3",
-      cyber: "cyber-button",
+      accent:
+        "bg-transparent text-neon-cyan border border-neon-cyan/30 hover:border-neon-cyan hover:shadow-[0_0_15px_rgba(0,240,255,0.2)] font-medium px-6 py-3",
     };
 
     return (

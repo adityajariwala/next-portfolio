@@ -7,7 +7,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Calendar, Clock, Tag, Search, ArrowRight } from "lucide-react";
 import Tile from "@/components/ui/Tile";
-import { Card, CardContent } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 
 interface BlogPost {
@@ -181,29 +180,27 @@ function BlogPageContent() {
             animate={{ opacity: 1 }}
             className="text-center py-20"
           >
-            <Card className="max-w-md mx-auto">
-              <CardContent className="py-12">
-                <h3 className="text-2xl font-bold text-neon-cyan mb-4">
-                  {posts.length === 0 ? "No posts yet" : "No posts found"}
-                </h3>
-                <p className="text-dark-300 mb-6">
-                  {posts.length === 0
-                    ? "Check back soon for insights on software engineering, AI/ML, and cloud architecture."
-                    : "Try adjusting your search or filters."}
-                </p>
-                {(selectedTag || searchQuery) && (
-                  <Button
-                    onClick={() => {
-                      setSelectedTag("");
-                      setSearchQuery("");
-                    }}
-                    variant="cyber"
-                  >
-                    Clear Filters
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
+            <div className="tile max-w-md mx-auto py-12 text-center">
+              <h3 className="text-2xl font-bold text-neon-cyan mb-4">
+                {posts.length === 0 ? "No posts yet" : "No posts found"}
+              </h3>
+              <p className="text-dark-300 mb-6">
+                {posts.length === 0
+                  ? "Check back soon for insights on software engineering, AI/ML, and cloud architecture."
+                  : "Try adjusting your search or filters."}
+              </p>
+              {(selectedTag || searchQuery) && (
+                <Button
+                  onClick={() => {
+                    setSelectedTag("");
+                    setSearchQuery("");
+                  }}
+                  variant="accent"
+                >
+                  Clear Filters
+                </Button>
+              )}
+            </div>
           </motion.div>
         ) : (
           <>

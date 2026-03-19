@@ -1,13 +1,15 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { Calendar, Clock, ArrowLeft, Tag } from "lucide-react";
 import Link from "next/link";
-import { getPostBySlug, getAllPostSlugs } from "@/lib/blog";
+import { getPostBySlug, getAllPosts } from "@/lib/blog";
 import Button from "@/components/ui/Button";
+import { BlogPostStructuredData } from "@/components/StructuredData";
 
-// Generate static params for all blog posts
+// Generate static params for published blog posts only
 export async function generateStaticParams() {
-  const slugs = getAllPostSlugs();
-  return slugs.map((slug) => ({ slug }));
+  const posts = getAllPosts();
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
 // Generate metadata for SEO
@@ -44,7 +46,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = await getPostBySlug(slug);
 
-  if (!post) {
+  if (!post || !post.published) {
     notFound();
   }
 
@@ -58,6 +60,15 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
   return (
     <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
+      <BlogPostStructuredData
+        title={post.title}
+        description={post.excerpt}
+        datePublished={post.date}
+        dateModified={post.date}
+        author={post.author}
+        url={`https://adityajariwala.com/blog/${slug}`}
+        image={post.coverImage}
+      />
       <article className="max-w-4xl mx-auto">
         {/* Back button */}
         <Link href="/blog" className="inline-block mb-8">
@@ -70,7 +81,13 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         {/* Cover image */}
         {post.coverImage && (
           <div className="aspect-video w-full overflow-hidden rounded-lg mb-8">
-            <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover" />
+            <Image
+              src={post.coverImage}
+              alt={post.title}
+              width={896}
+              height={504}
+              className="w-full h-full object-cover"
+            />
           </div>
         )}
 
@@ -126,13 +143,13 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         <footer className="mt-16 pt-8 border-t border-dark-700">
           <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
             <Link href="/blog">
-              <Button variant="cyber" className="flex items-center gap-2">
+              <Button variant="accent" className="flex items-center gap-2">
                 <ArrowLeft size={20} />
                 Back to All Posts
               </Button>
             </Link>
             <div className="flex gap-4">
-              <Link href="/contact">
+              <Link href="/#contact">
                 <Button variant="secondary">Get in Touch</Button>
               </Link>
             </div>
