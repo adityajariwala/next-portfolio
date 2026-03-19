@@ -266,7 +266,7 @@ export default function SkillConstellation({ className }: Props) {
       }
     }
 
-    function draw(t: number) {
+    function draw(_t: number) {
       const w = cssWidth();
       const h = cssHeight();
       ctx!.clearRect(0, 0, w, h);

@@ -3,6 +3,15 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -32,13 +41,13 @@ export async function POST(request: Request) {
           </h2>
 
           <div style="margin: 20px 0;">
-            <p style="margin: 5px 0;"><strong>From:</strong> ${name}</p>
-            <p style="margin: 5px 0;"><strong>Email:</strong> ${email}</p>
-            <p style="margin: 5px 0;"><strong>Subject:</strong> ${subject}</p>
+            <p style="margin: 5px 0;"><strong>From:</strong> ${escapeHtml(name)}</p>
+            <p style="margin: 5px 0;"><strong>Email:</strong> ${escapeHtml(email)}</p>
+            <p style="margin: 5px 0;"><strong>Subject:</strong> ${escapeHtml(subject)}</p>
           </div>
 
           <div style="background: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0;">
-            <p style="margin: 0; white-space: pre-wrap;">${message}</p>
+            <p style="margin: 0; white-space: pre-wrap;">${escapeHtml(message)}</p>
           </div>
 
           <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;" />

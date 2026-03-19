@@ -141,7 +141,7 @@ export const SOCIAL_LINKS = [
   { platform: "Email", url: `mailto:${OWNER_INFO.email}`, icon: "Mail" },
 ];
 
-export const FEATURED_PROJECTS: string[] = ["semantic-cache", "next-portfolio"];
+export const FEATURED_PROJECTS: string[] = ["go-cache-ml", "next-portfolio"];
 
 export const CAREER_TIMELINE = [
   { company: "Red Hat", role: "Technical Consultant", period: "2020–2022", color: "#39ff14" },

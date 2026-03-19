@@ -1,0 +1,201 @@
+<h2>Section 1: Hero Design</h2>
+<p class="subtitle">The first 3 seconds. This is your handshake. Two variations on the cinematic hero.</p>
+
+<div class="cards" style="display:flex;flex-direction:column;gap:40px;margin-top:32px;">
+
+  <!-- HERO A: Asymmetric Split -->
+  <div class="card" data-choice="hero-a-asymmetric" onclick="toggleSelect(this)" style="cursor:pointer;border:2px solid #333;border-radius:12px;overflow:hidden;">
+    <div style="background:#06060b;position:relative;overflow:hidden;min-height:480px;">
+
+      <!-- Particle constellation background - full width -->
+      <div style="position:absolute;inset:0;">
+        <svg viewBox="0 0 1200 480" style="width:100%;height:100%;">
+          <!-- Gradient mesh background -->
+          <defs>
+            <radialGradient id="g1a" cx="70%" cy="40%" r="50%">
+              <stop offset="0%" stop-color="rgba(0,240,255,0.04)"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </radialGradient>
+            <radialGradient id="g2a" cx="80%" cy="70%" r="40%">
+              <stop offset="0%" stop-color="rgba(185,41,221,0.03)"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </radialGradient>
+          </defs>
+          <rect width="1200" height="480" fill="url(#g1a)"/>
+          <rect width="1200" height="480" fill="url(#g2a)"/>
+
+          <!-- Constellation: skill nodes with connections -->
+          <!-- Primary cluster (right side) -->
+          <circle cx="820" cy="140" r="22" fill="none" stroke="rgba(0,240,255,0.2)" stroke-width="1"/>
+          <text x="820" y="144" text-anchor="middle" fill="rgba(0,240,255,0.7)" font-size="9" font-family="monospace">K8s</text>
+
+          <circle cx="920" cy="200" r="18" fill="none" stroke="rgba(185,41,221,0.2)" stroke-width="1"/>
+          <text x="920" y="204" text-anchor="middle" fill="rgba(185,41,221,0.6)" font-size="9" font-family="monospace">ML</text>
+
+          <circle cx="860" cy="280" r="16" fill="none" stroke="rgba(57,255,20,0.2)" stroke-width="1"/>
+          <text x="860" y="284" text-anchor="middle" fill="rgba(57,255,20,0.5)" font-size="8" font-family="monospace">Go</text>
+
+          <circle cx="760" cy="240" r="14" fill="none" stroke="rgba(0,240,255,0.15)" stroke-width="1"/>
+          <text x="760" y="244" text-anchor="middle" fill="rgba(0,240,255,0.5)" font-size="8" font-family="monospace">Py</text>
+
+          <circle cx="980" cy="120" r="12" fill="none" stroke="rgba(255,240,31,0.15)" stroke-width="1"/>
+          <text x="980" y="124" text-anchor="middle" fill="rgba(255,240,31,0.4)" font-size="7" font-family="monospace">TS</text>
+
+          <circle cx="1020" cy="280" r="14" fill="none" stroke="rgba(0,240,255,0.12)" stroke-width="1"/>
+          <text x="1020" y="284" text-anchor="middle" fill="rgba(0,240,255,0.4)" font-size="7" font-family="monospace">AWS</text>
+
+          <circle cx="700" cy="160" r="10" fill="none" stroke="rgba(185,41,221,0.1)" stroke-width="1"/>
+          <text x="700" y="164" text-anchor="middle" fill="rgba(185,41,221,0.4)" font-size="6" font-family="monospace">Torch</text>
+
+          <circle cx="1060" cy="180" r="8" fill="none" stroke="rgba(57,255,20,0.1)" stroke-width="1"/>
+
+          <!-- Connection lines -->
+          <line x1="820" y1="140" x2="920" y2="200" stroke="rgba(0,240,255,0.08)" stroke-width="0.5"/>
+          <line x1="920" y1="200" x2="860" y2="280" stroke="rgba(185,41,221,0.06)" stroke-width="0.5"/>
+          <line x1="820" y1="140" x2="760" y2="240" stroke="rgba(0,240,255,0.06)" stroke-width="0.5"/>
+          <line x1="760" y1="240" x2="860" y2="280" stroke="rgba(57,255,20,0.05)" stroke-width="0.5"/>
+          <line x1="820" y1="140" x2="980" y2="120" stroke="rgba(255,240,31,0.05)" stroke-width="0.5"/>
+          <line x1="920" y1="200" x2="1020" y2="280" stroke="rgba(0,240,255,0.04)" stroke-width="0.5"/>
+          <line x1="700" y1="160" x2="820" y2="140" stroke="rgba(185,41,221,0.04)" stroke-width="0.5"/>
+          <line x1="980" y1="120" x2="1060" y2="180" stroke="rgba(57,255,20,0.04)" stroke-width="0.5"/>
+
+          <!-- Scattered ambient dots -->
+          <circle cx="650" cy="100" r="1.5" fill="rgba(0,240,255,0.15)"/>
+          <circle cx="1100" cy="350" r="1" fill="rgba(185,41,221,0.1)"/>
+          <circle cx="750" cy="380" r="1.5" fill="rgba(57,255,20,0.08)"/>
+          <circle cx="950" cy="380" r="1" fill="rgba(0,240,255,0.06)"/>
+          <circle cx="1080" cy="80" r="1" fill="rgba(255,240,31,0.08)"/>
+        </svg>
+      </div>
+
+      <!-- Content: left-heavy asymmetric layout -->
+      <div style="position:relative;z-index:1;padding:80px 60px 60px;max-width:560px;">
+        <!-- Monospace tag line -->
+        <div style="font-size:11px;color:#00f0ff;letter-spacing:3px;font-family:'Courier New',monospace;margin-bottom:24px;opacity:0.8;">// PORTFOLIO.SYS</div>
+
+        <!-- Name: large, bold, left-aligned -->
+        <div style="font-size:56px;font-weight:800;color:#f0f0f0;line-height:1.05;font-family:system-ui;letter-spacing:-2px;margin-bottom:8px;">Aditya</div>
+        <div style="font-size:56px;font-weight:800;color:#f0f0f0;line-height:1.05;font-family:system-ui;letter-spacing:-2px;margin-bottom:20px;">Jariwala</div>
+
+        <!-- Role with subtle glow -->
+        <div style="font-size:15px;color:#00f0ff;margin-bottom:20px;text-shadow:0 0 10px rgba(0,240,255,0.3);font-family:system-ui;font-weight:500;">Senior Software Engineer at Capital One</div>
+
+        <!-- Tagline -->
+        <div style="font-size:14px;color:#555;line-height:1.7;margin-bottom:32px;max-width:440px;">Building AI-powered, cloud-native systems that process millions of transactions daily. Specializing in ML, Kubernetes, and scalable architecture.</div>
+
+        <!-- CTAs -->
+        <div style="display:flex;gap:12px;">
+          <div style="padding:11px 28px;background:rgba(0,240,255,0.08);border:1px solid rgba(0,240,255,0.25);border-radius:8px;font-size:13px;color:#00f0ff;font-family:system-ui;transition:all 0.2s;">Explore Work</div>
+          <div style="padding:11px 28px;border:1px solid #2a2a2a;border-radius:8px;font-size:13px;color:#888;font-family:system-ui;">Read Blog</div>
+        </div>
+
+        <!-- Social row -->
+        <div style="display:flex;gap:16px;margin-top:28px;">
+          <span style="font-size:11px;color:#444;font-family:system-ui;">GitHub</span>
+          <span style="font-size:11px;color:#444;font-family:system-ui;">LinkedIn</span>
+          <span style="font-size:11px;color:#444;font-family:system-ui;">Email</span>
+        </div>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div style="font-size:9px;color:#333;letter-spacing:2px;text-transform:uppercase;">Scroll</div>
+        <div style="width:1px;height:20px;background:linear-gradient(to bottom,#333,transparent);"></div>
+      </div>
+    </div>
+
+    <div class="card-body" style="padding:20px 40px 24px;background:#111;">
+      <h3 style="color:#e8e8e8;font-size:16px;margin:0 0 8px;">A — Asymmetric Split</h3>
+      <p style="color:#888;font-size:13px;line-height:1.5;margin:0;">Text anchored left, constellation floats right. Strong asymmetry creates visual tension. The skill nodes in the background are interactive — they drift slowly, respond to cursor proximity (gravitational pull), and glow on hover to reveal related projects. The constellation IS your skill map, but it doesn't demand attention — it rewards curiosity.</p>
+    </div>
+  </div>
+
+  <!-- HERO B: Centered Dramatic -->
+  <div class="card" data-choice="hero-b-centered" onclick="toggleSelect(this)" style="cursor:pointer;border:2px solid #333;border-radius:12px;overflow:hidden;">
+    <div style="background:#06060b;position:relative;overflow:hidden;min-height:480px;display:flex;align-items:center;justify-content:center;">
+
+      <!-- Full-screen particle field -->
+      <div style="position:absolute;inset:0;">
+        <svg viewBox="0 0 1200 480" style="width:100%;height:100%;">
+          <defs>
+            <radialGradient id="g1b" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="rgba(0,240,255,0.06)"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </radialGradient>
+          </defs>
+          <rect width="1200" height="480" fill="url(#g1b)"/>
+
+          <!-- Orbital rings around center -->
+          <ellipse cx="600" cy="240" rx="280" ry="140" fill="none" stroke="rgba(0,240,255,0.04)" stroke-width="0.5" transform="rotate(-15 600 240)"/>
+          <ellipse cx="600" cy="240" rx="200" ry="100" fill="none" stroke="rgba(185,41,221,0.04)" stroke-width="0.5" transform="rotate(10 600 240)"/>
+          <ellipse cx="600" cy="240" rx="340" ry="170" fill="none" stroke="rgba(57,255,20,0.03)" stroke-width="0.5" transform="rotate(-5 600 240)"/>
+
+          <!-- Skill nodes orbiting -->
+          <circle cx="380" cy="160" r="16" fill="none" stroke="rgba(0,240,255,0.2)" stroke-width="1"/>
+          <text x="380" y="164" text-anchor="middle" fill="rgba(0,240,255,0.6)" font-size="7" font-family="monospace">K8s</text>
+
+          <circle cx="830" cy="180" r="14" fill="none" stroke="rgba(185,41,221,0.2)" stroke-width="1"/>
+          <text x="830" y="184" text-anchor="middle" fill="rgba(185,41,221,0.5)" font-size="7" font-family="monospace">ML</text>
+
+          <circle cx="350" cy="310" r="12" fill="none" stroke="rgba(57,255,20,0.15)" stroke-width="1"/>
+          <text x="350" y="314" text-anchor="middle" fill="rgba(57,255,20,0.5)" font-size="7" font-family="monospace">Go</text>
+
+          <circle cx="860" cy="300" r="10" fill="none" stroke="rgba(255,240,31,0.15)" stroke-width="1"/>
+          <text x="860" y="304" text-anchor="middle" fill="rgba(255,240,31,0.4)" font-size="6" font-family="monospace">TS</text>
+
+          <circle cx="280" cy="230" r="8" fill="none" stroke="rgba(0,240,255,0.1)" stroke-width="1"/>
+          <text x="280" y="234" text-anchor="middle" fill="rgba(0,240,255,0.4)" font-size="6" font-family="monospace">Py</text>
+
+          <circle cx="920" cy="240" r="9" fill="none" stroke="rgba(57,255,20,0.1)" stroke-width="1"/>
+          <text x="920" y="244" text-anchor="middle" fill="rgba(57,255,20,0.4)" font-size="6" font-family="monospace">AWS</text>
+
+          <!-- Ambient particles -->
+          <circle cx="450" cy="100" r="1.5" fill="rgba(0,240,255,0.12)"/>
+          <circle cx="750" cy="120" r="1" fill="rgba(185,41,221,0.1)"/>
+          <circle cx="500" cy="380" r="1.5" fill="rgba(57,255,20,0.08)"/>
+          <circle cx="700" cy="370" r="1" fill="rgba(0,240,255,0.06)"/>
+          <circle cx="200" cy="150" r="1" fill="rgba(255,240,31,0.06)"/>
+          <circle cx="1000" cy="150" r="1" fill="rgba(185,41,221,0.06)"/>
+        </svg>
+      </div>
+
+      <!-- Centered content -->
+      <div style="position:relative;z-index:1;text-align:center;max-width:600px;padding:40px;">
+        <div style="font-size:11px;color:#00f0ff;letter-spacing:4px;font-family:'Courier New',monospace;margin-bottom:24px;">ADITYA JARIWALA</div>
+
+        <div style="font-size:48px;font-weight:800;color:#f0f0f0;line-height:1.1;font-family:system-ui;letter-spacing:-1px;margin-bottom:16px;">Building intelligent<br>systems at scale.</div>
+
+        <div style="font-size:14px;color:#555;line-height:1.7;margin-bottom:32px;max-width:480px;margin-left:auto;margin-right:auto;">Senior Software Engineer at Capital One. AI/ML, Kubernetes,<br>and cloud-native architecture.</div>
+
+        <div style="display:flex;gap:12px;justify-content:center;">
+          <div style="padding:11px 28px;background:rgba(0,240,255,0.08);border:1px solid rgba(0,240,255,0.25);border-radius:8px;font-size:13px;color:#00f0ff;">Explore Work</div>
+          <div style="padding:11px 28px;border:1px solid #2a2a2a;border-radius:8px;font-size:13px;color:#888;">Read Blog</div>
+        </div>
+
+        <div style="display:flex;gap:16px;justify-content:center;margin-top:24px;">
+          <span style="font-size:11px;color:#444;">GitHub</span>
+          <span style="font-size:11px;color:#444;">LinkedIn</span>
+          <span style="font-size:11px;color:#444;">Email</span>
+        </div>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div style="font-size:9px;color:#333;letter-spacing:2px;text-transform:uppercase;">Scroll</div>
+        <div style="width:1px;height:20px;background:linear-gradient(to bottom,#333,transparent);"></div>
+      </div>
+    </div>
+
+    <div class="card-body" style="padding:20px 40px 24px;background:#111;">
+      <h3 style="color:#e8e8e8;font-size:16px;margin:0 0 8px;">B — Centered Orbital</h3>
+      <p style="color:#888;font-size:13px;line-height:1.5;margin:0;">You're at the center, skills orbit around you. Text is centered and dramatic — a bold statement that fills the viewport. The orbital rings create a sense of a solar system with you as the sun. Skill nodes slowly orbit on elliptical paths and respond to cursor. More immersive and spatial, but less asymmetric tension. Better mobile experience since everything is centered.</p>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top:32px;padding:20px;border:1px solid #2a2a2a;border-radius:8px;background:rgba(255,255,255,0.02);">
+  <p style="color:#888;font-size:13px;margin:0;line-height:1.6;">
+    <strong style="color:#ccc;">My take:</strong> I lean toward <strong>A (Asymmetric)</strong> — it creates stronger visual hierarchy and avoids the "centered hero" pattern that your current site already uses. The left-anchored text gives the eye a clear starting point, and the constellation on the right rewards exploration. It also transitions more naturally into the bento grid below. But B is better on mobile since centering is more natural on narrow screens — we can make A responsive by centering on mobile.
+  </p>
+</div>

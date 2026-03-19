@@ -1,0 +1,126 @@
+<h2>How should the site flow?</h2>
+<p class="subtitle">Two ways to consolidate. Click the one that feels right — or tell me what to mix.</p>
+
+<div class="cards" style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:32px;">
+
+  <!-- OPTION A: Rich Home + Separate Pages -->
+  <div class="card" data-choice="a-rich-home" onclick="toggleSelect(this)" style="cursor:pointer;border:2px solid #333;border-radius:12px;overflow:hidden;transition:all 0.3s;">
+    <div class="card-image" style="background:#0a0a10;padding:28px;position:relative;">
+      <!-- Sitemap visualization -->
+      <div style="font-family:system-ui;">
+        <!-- Home page - expanded -->
+        <div style="border:1px solid #00f0ff;border-radius:8px;padding:14px;margin-bottom:8px;background:rgba(0,240,255,0.03);">
+          <div style="font-size:11px;color:#00f0ff;font-weight:700;margin-bottom:10px;">/ HOME (rich, scrollable)</div>
+          <div style="display:flex;flex-direction:column;gap:4px;padding-left:12px;border-left:2px solid rgba(0,240,255,0.2);">
+            <div style="font-size:10px;color:#888;">Hero + Interactive Viz</div>
+            <div style="font-size:10px;color:#888;">About / Story (absorbed)</div>
+            <div style="font-size:10px;color:#888;">Skills as Data Viz</div>
+            <div style="font-size:10px;color:#888;">Experience Timeline</div>
+            <div style="font-size:10px;color:#888;">Featured Projects</div>
+            <div style="font-size:10px;color:#888;">Latest Blog Posts</div>
+            <div style="font-size:10px;color:#888;">Contact Section (absorbed)</div>
+          </div>
+        </div>
+
+        <!-- Separate pages -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+          <div style="border:1px solid #333;border-radius:6px;padding:10px;text-align:center;">
+            <div style="font-size:10px;color:#b829dd;font-weight:600;">/projects</div>
+            <div style="font-size:9px;color:#666;margin-top:4px;">Full grid + filters</div>
+          </div>
+          <div style="border:1px solid #333;border-radius:6px;padding:10px;text-align:center;">
+            <div style="font-size:10px;color:#b829dd;font-weight:600;">/blog</div>
+            <div style="font-size:9px;color:#666;margin-top:4px;">Posts + tags</div>
+          </div>
+          <div style="border:1px solid #333;border-radius:6px;padding:10px;text-align:center;">
+            <div style="font-size:10px;color:#b829dd;font-weight:600;">/resume</div>
+            <div style="font-size:9px;color:#666;margin-top:4px;">PDF / download</div>
+          </div>
+        </div>
+
+        <!-- Navigation note -->
+        <div style="margin-top:14px;padding:10px;border-radius:6px;background:rgba(255,255,255,0.02);">
+          <div style="font-size:10px;color:#666;line-height:1.5;">Nav: <span style="color:#aaa;">Home</span> &middot; <span style="color:#aaa;">Projects</span> &middot; <span style="color:#aaa;">Blog</span> &middot; <span style="color:#aaa;">Resume</span></div>
+          <div style="font-size:9px;color:#555;margin-top:4px;">4 nav items (down from 6)</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body" style="padding:20px 28px 24px;background:#111;">
+      <h3 style="color:#e8e8e8;font-size:16px;margin:0 0 8px;">A — Rich Home Hub</h3>
+      <p style="color:#888;font-size:13px;line-height:1.5;margin:0;">Home becomes your showcase — a long-scroll experience that tells your story with data viz, interactive elements, and personality. About and Contact are absorbed as sections. Projects, Blog, and Resume stay separate because they have real depth. <strong style="color:#ccc;">4 routes total.</strong></p>
+      <div style="margin-top:12px;">
+        <span style="font-size:11px;color:#39ff14;">+ Strongest first impression</span><br>
+        <span style="font-size:11px;color:#39ff14;">+ Everything important on one scroll</span><br>
+        <span style="font-size:11px;color:#ff6b35;">- Home page is heavy (needs good lazy loading)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION B: Curated Hub + Deep Pages -->
+  <div class="card" data-choice="b-curated-hub" onclick="toggleSelect(this)" style="cursor:pointer;border:2px solid #333;border-radius:12px;overflow:hidden;transition:all 0.3s;">
+    <div class="card-image" style="background:#0a0a10;padding:28px;position:relative;">
+      <!-- Sitemap visualization -->
+      <div style="font-family:system-ui;">
+        <!-- Home page - focused -->
+        <div style="border:1px solid #00f0ff;border-radius:8px;padding:14px;margin-bottom:8px;background:rgba(0,240,255,0.03);">
+          <div style="font-size:11px;color:#00f0ff;font-weight:700;margin-bottom:10px;">/ HOME (focused, punchy)</div>
+          <div style="display:flex;flex-direction:column;gap:4px;padding-left:12px;border-left:2px solid rgba(0,240,255,0.2);">
+            <div style="font-size:10px;color:#888;">Hero + Interactive Viz</div>
+            <div style="font-size:10px;color:#888;">Skills Data Viz (compact)</div>
+            <div style="font-size:10px;color:#888;">3 Featured Projects</div>
+            <div style="font-size:10px;color:#888;">Latest Blog Post</div>
+            <div style="font-size:10px;color:#888;">CTA / Contact</div>
+          </div>
+        </div>
+
+        <!-- Separate pages -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+          <div style="border:1px solid #333;border-radius:6px;padding:10px;text-align:center;">
+            <div style="font-size:10px;color:#b829dd;font-weight:600;">/about</div>
+            <div style="font-size:9px;color:#666;margin-top:4px;">Story + Experience + Education</div>
+          </div>
+          <div style="border:1px solid #333;border-radius:6px;padding:10px;text-align:center;">
+            <div style="font-size:10px;color:#b829dd;font-weight:600;">/projects</div>
+            <div style="font-size:9px;color:#666;margin-top:4px;">Full grid + filters</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+          <div style="border:1px solid #333;border-radius:6px;padding:10px;text-align:center;">
+            <div style="font-size:10px;color:#b829dd;font-weight:600;">/blog</div>
+            <div style="font-size:9px;color:#666;margin-top:4px;">Posts</div>
+          </div>
+          <div style="border:1px solid #333;border-radius:6px;padding:10px;text-align:center;">
+            <div style="font-size:10px;color:#b829dd;font-weight:600;">/resume</div>
+            <div style="font-size:9px;color:#666;margin-top:4px;">PDF</div>
+          </div>
+          <div style="border:1px solid #333;border-radius:6px;padding:10px;text-align:center;">
+            <div style="font-size:10px;color:#b829dd;font-weight:600;">/contact</div>
+            <div style="font-size:9px;color:#666;margin-top:4px;">Full form</div>
+          </div>
+        </div>
+
+        <!-- Navigation note -->
+        <div style="margin-top:14px;padding:10px;border-radius:6px;background:rgba(255,255,255,0.02);">
+          <div style="font-size:10px;color:#666;line-height:1.5;">Nav: <span style="color:#aaa;">Home</span> &middot; <span style="color:#aaa;">About</span> &middot; <span style="color:#aaa;">Projects</span> &middot; <span style="color:#aaa;">Blog</span> &middot; <span style="color:#aaa;">Resume</span> &middot; <span style="color:#aaa;">Contact</span></div>
+          <div style="font-size:9px;color:#555;margin-top:4px;">6 nav items (same as current)</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body" style="padding:20px 28px 24px;background:#111;">
+      <h3 style="color:#e8e8e8;font-size:16px;margin:0 0 8px;">B — Curated Hub + Deep Pages</h3>
+      <p style="color:#888;font-size:13px;line-height:1.5;margin:0;">Home is a tight, punchy teaser — hero viz, compact skills, a few featured items, then CTA. Each page gets its own space to breathe. About stays separate with full story, timeline, education. Contact keeps its own page. <strong style="color:#ccc;">6 routes, same as now.</strong></p>
+      <div style="margin-top:12px;">
+        <span style="font-size:11px;color:#39ff14;">+ Faster initial load</span><br>
+        <span style="font-size:11px;color:#39ff14;">+ Each page has a clear purpose</span><br>
+        <span style="font-size:11px;color:#ff6b35;">- First impression is shorter before they navigate away</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top:32px;padding:20px;border:1px solid #2a2a2a;border-radius:8px;background:rgba(255,255,255,0.02);">
+  <p style="color:#888;font-size:13px;margin:0;line-height:1.6;">
+    <strong style="color:#ccc;">Key difference:</strong> Option A bets on a strong first impression — everything important is on one scroll. Option B bets on focused pages — each route does one thing well. Both get the interactive hero and data viz.
+  </p>
+</div>

@@ -29,6 +29,7 @@ export interface BlogPostMetadata {
   tags: string[];
   readingTime: string;
   coverImage?: string;
+  published: boolean;
 }
 
 // Calculate reading time based on word count
@@ -74,8 +75,11 @@ export function getAllPosts(): BlogPostMetadata[] {
           tags: data.tags || [],
           readingTime: calculateReadingTime(content),
           coverImage: data.coverImage,
+          published: data.published !== false,
         };
       })
+      // Filter out unpublished drafts
+      .filter((post) => post.published)
       // Sort posts by date (newest first)
       .sort((a, b) => (a.date > b.date ? -1 : 1))
   );
@@ -98,10 +102,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     const { data, content } = matter(fileContents);
 
     // Convert markdown/MDX to HTML with GitHub Flavored Markdown support
-    const processedContent = await remark()
-      .use(remarkGfm)
-      .use(html, { sanitize: false })
-      .process(content);
+    const processedContent = await remark().use(remarkGfm).use(html).process(content);
     const contentHtml = processedContent.toString();
 
     return {

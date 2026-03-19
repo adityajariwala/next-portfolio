@@ -1,12 +1,12 @@
 import { fetchGitHubStats, fetchGitHubEvents, fetchFeaturedRepos } from "@/lib/github";
-import { OWNER_INFO, TECH_STACK, FEATURED_PROJECTS, SOCIAL_LINKS } from "@/lib/constants";
+import { OWNER_INFO, TECH_STACK, FEATURED_PROJECTS } from "@/lib/constants";
 import { getAllPosts } from "@/lib/blog";
 import Tile from "@/components/ui/Tile";
 import CareerTimeline from "@/components/home/CareerTimeline";
 import AnimatedTile from "@/components/home/AnimatedTile";
 import ContactCTATile from "@/components/home/ContactCTATile";
 import Link from "next/link";
-import { ArrowUpRight, Github, Star } from "lucide-react";
+import { ArrowUpRight, Star } from "lucide-react";
 
 /* ── types ──────────────────────────────────────────────────────── */
 interface GitHubRepo {
