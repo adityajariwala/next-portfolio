@@ -78,20 +78,20 @@ function buildNodes(): ConstellationNode[] {
   const rng = mulberry32(42);
   const nodes: ConstellationNode[] = [];
 
-  // Canvas is full viewport. Categories in right portion, clear of text (left ~35%).
-  // Staggered 2-row layout with offset for visual interest.
+  // Canvas is full viewport. Left ~40% is text. Categories in center-right.
+  // Top row: y ~0.18-0.25. Bottom row: y ~0.52-0.6 (pulled up to avoid cutoff).
   const regions = [
-    { cx: 0.52, cy: 0.2 }, // Languages — pushed right of name
-    { cx: 0.72, cy: 0.14 }, // AI/ML
+    { cx: 0.55, cy: 0.18 }, // Languages — clear of name
+    { cx: 0.75, cy: 0.14 }, // AI/ML
     { cx: 0.92, cy: 0.22 }, // Cloud & Infra
-    { cx: 0.48, cy: 0.62 }, // Backend
-    { cx: 0.72, cy: 0.7 }, // Frontend
-    { cx: 0.92, cy: 0.58 }, // Systems
+    { cx: 0.52, cy: 0.55 }, // Backend
+    { cx: 0.73, cy: 0.6 }, // Frontend
+    { cx: 0.92, cy: 0.5 }, // Systems
   ];
 
-  // Orbital distances in PIXELS — consistent visual spacing
-  const SUB_DIST = 80; // subcategory: 60-100px from parent
-  const LEAF_DIST = 50; // leaf: 35-65px further from subcategory
+  // Orbital distances in PIXELS
+  const SUB_DIST = 65; // subcategory: 50-80px from parent (tighter for cohesion)
+  const LEAF_DIST = 40; // leaf: 25-55px further from subcategory
 
   Object.entries(CONSTELLATION_DATA).forEach(([catName, catData], catIdx) => {
     const region = regions[catIdx % regions.length];
