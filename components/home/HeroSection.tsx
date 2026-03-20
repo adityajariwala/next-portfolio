@@ -17,9 +17,8 @@ type IconName = keyof typeof ICON_MAP;
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen">
-      {/* Constellation — full viewport background on all screens.
-           Mobile gets a static render (no animation/hover), desktop gets interactive. */}
-      <div className="absolute inset-0 z-0 opacity-75 lg:opacity-100">
+      {/* Constellation — fixed on mobile (persists on scroll), absolute on desktop (hero only) */}
+      <div className="fixed inset-0 z-0 opacity-75 lg:absolute lg:opacity-100">
         <SkillConstellation className="w-full h-full" />
       </div>
 
