@@ -335,10 +335,13 @@ export default function SkillConstellation({ className }: Props) {
           if (nodes[i].parentIdx === parent) set.add(i);
         }
       }
-      // Cross-links
+      // Cross-links — run after full family is built so all members
+      // can pull in their cross-link partners
       for (const [from, to] of resolvedCrossLinks) {
-        if (set.has(from)) set.add(to);
-        if (set.has(to)) set.add(from);
+        if (set.has(from) || set.has(to)) {
+          set.add(from);
+          set.add(to);
+        }
       }
       return set;
     }
@@ -388,8 +391,8 @@ export default function SkillConstellation({ className }: Props) {
         ctx!.beginPath();
         ctx!.moveTo(a.x, a.y);
         ctx!.lineTo(b.x, b.y);
-        ctx!.strokeStyle = lit ? hexA("#fff", 0.35) : hexA("#fff", 0.15);
-        ctx!.lineWidth = lit ? 1.0 : 0.6;
+        ctx!.strokeStyle = lit ? hexA("#fff", 0.8) : hexA("#fff", 0.15);
+        ctx!.lineWidth = lit ? 1.6 : 0.6;
         ctx!.setLineDash(lit ? [3, 3] : [4, 6]);
         ctx!.stroke();
         ctx!.setLineDash([]);
